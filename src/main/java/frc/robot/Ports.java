@@ -10,6 +10,10 @@ public final class Ports {
         public static final boolean IS_AUX_SENSOR_INVERTED = false;
     }
 
+    public static final class Elevator {
+        public static final int MOTOR = 0;
+    }
+
     public static class Controls {
         public static final int XBOX = 0;
     }
