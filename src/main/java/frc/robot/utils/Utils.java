@@ -51,4 +51,22 @@ public class Utils {
     public static double map(double x, double in_min, double in_max, double out_min, double out_max) {
         return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
     }
+
+    public static LinearFunction[] interpolateDoubleMap(double[][] map) {
+        LinearFunction[] functions = new LinearFunction[map.length - 1];
+
+        final int X = 0;
+        final int Y = 1;
+
+        for (int i = 1; i < map.length; i++) {
+            double dx = map[i - 1][X] - map[i][X];
+            double dy = map[i - 1][Y] - map[i][Y];
+            double slope = dy / dx;
+            double offset = map[i][Y] - slope * map[i][X];
+
+            functions[i - 1] = new LinearFunction(slope, offset, map[i - 1][X], map[i][X]);
+        }
+
+        return functions;
+    }
 }

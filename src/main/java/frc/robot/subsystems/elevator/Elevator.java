@@ -1,34 +1,104 @@
 package frc.robot.subsystems.elevator;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.Nat;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.LinearQuadraticRegulator;
+import edu.wpi.first.math.estimator.KalmanFilter;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N2;
+import edu.wpi.first.math.system.LinearSystem;
+import edu.wpi.first.math.system.LinearSystemLoop;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Ports;
 import frc.robot.subsystems.UnitModel;
-import frc.robot.valuetuner.WebConstant;
+
+import static frc.robot.Constants.Elevator.*;
+import static frc.robot.Constants.Falcon.*;
+import static frc.robot.Constants.LOOP_PERIOD;
 
 public class Elevator extends SubsystemBase {
+    public static final TalonFX motor = new TalonFX(Ports.Elevator.ELE_MOTOR);
     private static Elevator INSTANCE = null;
-    private final WPI_TalonFX motor = new WPI_TalonFX(Ports.Elevator.MOTOR);
-    private final UnitModel unitModel = new UnitModel(Constants.Elevator.TICKS_PER_METER);
+    private final UnitModel unitMan = new UnitModel(TICKS_PER_METER);
+    private final LinearSystemLoop<N2, N1, N1> linearSystemLoop;
+    private final TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(ACCELERATION, MAX_VELOCITY);
+    private TrapezoidProfile.State lastTrapezoidState;
+    private double setpointHeight = 0;
 
-    private final WebConstant webKp = WebConstant.of("Elevator", "kP", Constants.Elevator.Kp);
-    private final WebConstant webKi = WebConstant.of("Elevator", "kP", Constants.Elevator.Ki);
-    private final WebConstant webKd = WebConstant.of("Elevator", "kP", Constants.Elevator.Kd);
-    private final WebConstant webKf = WebConstant.of("Elevator", "kP", Constants.Elevator.Kf);
-
+    /**
+     * Configure the elevator motor.
+     */
     private Elevator() {
-        motor.config_kP(0, Constants.Elevator.Kp);
-        motor.config_kI(0, Constants.Elevator.Ki);
-        motor.config_kD(0, Constants.Elevator.Kd);
-        motor.config_kF(0, Constants.Elevator.Kf);
+        lastTrapezoidState = new TrapezoidProfile.State(getPosition(), 0);
 
-        motor.setInverted(Constants.Elevator.MOTOR_INVERSION);
-        motor.enableVoltageCompensation(true);
-        motor.configVoltageCompSaturation(Constants.NOMINAL_VOLTAGE);
-        motor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, Constants.Elevator.CURRENT_LIMIT, 0, 0));
+        motor.setSensorPhase(Ports.Elevator.SENSOR_PHASE);
+        motor.setSelectedSensorPosition(Ports.Elevator.SENSOR_POS);
+        motor.setInverted(INVERTED);
+
+        motor.configMotionAcceleration(unitMan.toTicks100ms(ACCELERATION));
+        motor.configMotionCruiseVelocity(unitMan.toTicks100ms(MAX_VELOCITY));
+
+        motor.config_kP(Ports.Elevator.PID_X, kP);
+        motor.config_kI(Ports.Elevator.PID_X, kI);
+        motor.config_kD(Ports.Elevator.PID_X, kD);
+
+        Matrix<N2, N2> a = Matrix.mat(Nat.N2(), Nat.N2()).fill(
+                0,
+                0,
+                1,
+                -(sqr(G) * Kt) / (R * sqr(radius) * mass * Kv)
+        );
+
+        Matrix<N2, N1> b = Matrix.mat(Nat.N2(), Nat.N1()).fill(
+                0,
+                G * Kt / (R * radius * mass)
+        );
+
+        Matrix<N1, N2> c = Matrix.mat(Nat.N1(), Nat.N2()).fill(
+                1,
+                0
+        );
+
+        Matrix<N1, N1> d = Matrix.mat(Nat.N1(), Nat.N1()).fill(
+                0
+        );
+
+        LinearSystem<N2, N1, N1> elevatorPlant = new LinearSystem<>(
+                a,
+                b,
+                c,
+                d
+        );
+
+        KalmanFilter<N2, N1, N1> kalmanFilter = new KalmanFilter<>(
+                Nat.N2(),
+                Nat.N1(),
+                elevatorPlant,
+                MODEL_TOLERANCE,
+                SENSOR_TOLERANCE,
+                LOOP_PERIOD
+        );
+
+        LinearQuadraticRegulator<N2, N1, N1> lqr = new LinearQuadraticRegulator<>(
+                elevatorPlant,
+                qelms,
+                relms,
+                LOOP_PERIOD
+        );
+
+        linearSystemLoop = new LinearSystemLoop<>(
+                elevatorPlant,
+                lqr,
+                kalmanFilter,
+                NOMINAL_VOLTAGE,
+                LOOP_PERIOD
+        );
     }
 
     public static Elevator getInstance() {
@@ -38,37 +108,67 @@ public class Elevator extends SubsystemBase {
         return INSTANCE;
     }
 
-    /**
-     * Sets the velocity of the motor.
-     *
-     * @param velocity the setpoint. [m/s]
-     */
-    public void setVelocity(double velocity) {
-        motor.set(ControlMode.Velocity, unitModel.toTicks100ms(velocity));
+    public double sqr(double d) {
+        return Math.pow(d, 2);
     }
 
     /**
-     * Gets the current velocity of the elevator.
+     * Gets the position of the motor (used for debugging).
      *
-     * @return the velocity of the elevator. [m/s]
+     * @return the position of the motor. [m]
      */
-    public double getVelocity() {
-        return unitModel.toVelocity(motor.getSelectedSensorVelocity());
+    public double getPosition() {
+        return unitMan.toUnits(motor.getSelectedSensorPosition());
+    }
+
+    public double getPower() {
+        return motor.getMotorOutputPercent();
     }
 
     public void setPower(double power) {
         motor.set(ControlMode.PercentOutput, power);
     }
 
-    public double getPower() {
-        return motor.get();
+    public void setHeight(double height, double timeInterval) {
+        setpointHeight = height;
+        setPosition(unitMan.toTicks(height), timeInterval);
     }
 
-    @Override
-    public void periodic() {
-        motor.config_kP(0, webKp.get());
-        motor.config_kI(0, webKi.get());
-        motor.config_kD(0, webKd.get());
-        motor.config_kF(0, webKf.get());
+    public double getHeight() {
+        return unitMan.toUnits(getPosition());
+    }
+
+    public void setPosition(double position, double timeInterval) {
+        setpointHeight = unitMan.toUnits(position);
+        TrapezoidProfile.State goal = new TrapezoidProfile.State(position, 0);
+        lastTrapezoidState =
+                (new TrapezoidProfile(constraints, goal, lastTrapezoidState)).calculate(LOOP_PERIOD);
+
+        linearSystemLoop.setNextR(lastTrapezoidState.velocity, lastTrapezoidState.position);
+        linearSystemLoop.correct(VecBuilder.fill(lastTrapezoidState.position));
+        linearSystemLoop.predict(timeInterval);
+
+        double output = linearSystemLoop.getU(0) / NOMINAL_VOLTAGE;
+        motor.set(ControlMode.PercentOutput, output, DemandType.ArbitraryFeedForward, kF);
+    }
+
+    public boolean atSetpoint(double setpoint, double tolerance) {
+        return Math.abs(setpoint - getHeight()) < tolerance;
+    }
+
+    public double getSetpointHeight() {
+        return setpointHeight;
+    }
+
+    public void terminate() {
+        motor.set(ControlMode.PercentOutput, 0);
+    }
+
+    public double getCurrentOutput() {
+        return motor.getSupplyCurrent();
+    }
+
+    public void resetEncoder() {
+        motor.setSelectedSensorPosition(0);
     }
 }

@@ -2,6 +2,16 @@ package frc.robot;
 
 
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.Nat;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N2;
+import frc.robot.valuetuner.WebConstant;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public final class Constants {
     public static final int TALON_TIMEOUT = 10; // Waiting period for configurations [ms].
@@ -14,18 +24,59 @@ public final class Constants {
 
     public static final boolean ENABLE_VOLTAGE_COMPENSATION = true;
     public static final boolean ENABLE_CURRENT_LIMIT = true;
-    public static final class Elevator {
-        public static final double CURRENT_LIMIT = 30; // [amp]
-        public static final double DRUM_RADIUS = 1; // [m]
-        public static final double Kp = 1;
-        public static final double Ki = 0;
-        public static final double Kd = 0;
-        public static final double Kf = 0;
-        public static final TalonFXInvertType MOTOR_INVERSION = TalonFXInvertType.CounterClockwise;
 
-        public static final double GEAR_RATIO = 0.1; // Ratio between motor and effective gear.
-        public static final double TICKS_PER_DEGREE = (2048 / 360.0) / GEAR_RATIO; // Ratio between motor ticks to effective gear degrees.
-        public static final double DEGREES_PER_METER = 360 / (2 * Math.PI * DRUM_RADIUS); // Ratio between drum degrees to circumference.
-        public static final double TICKS_PER_METER = TICKS_PER_DEGREE * DEGREES_PER_METER; // Ratio between motor ticks to elevator height.
+    public static class Elevator {
+        public static final int ACCELERATION = 2; // The acceleration for the trapezoid control mode. [m/s^2]
+        public static final int MAX_VELOCITY = 1; // The cruise velocity. [m/s]
+        public static final WebConstant STALL_CURRENT = WebConstant.of("Elevator", "Stall Current", 16);
+
+        public static final double kP = 0.2; // Proportional constant.
+        public static final double kI = 0; // Integral constant.
+        public static final double kD = 0.02; // Derivative constant.
+        public static final double MAX_HEIGHT = 1.8; // Maximum height of the elevator. [m]
+        public static final double DRUM_RADIUS = 0.03; // Radius of the elevator drum. [m]
+        public static final double SLOW_MOVEMENT = MAX_HEIGHT / 5; // Makes the elevator finish moving at 5s. [m/s]
+        public static final double TICKS_PER_METER = 2 * Math.PI * DRUM_RADIUS / 4096; // [tick]
+        public static final double g = 9.80665;
+        public static final double G = 1 / 10.0; // gear ratio
+        public static final double radius = 0; // [m]
+        public static final double mass = 0; // [kg]
+        public static final double kF = (Falcon.R * radius * mass * mass * g) / (G * Falcon.Kt); // Takes into account the force that gravity applies (feed forward).
+
+        public static final boolean INVERTED = false; // Whether the motor is inverted.
+
+        public static final Matrix<N2, N1> MODEL_TOLERANCE = Matrix.mat(Nat.N2(), Nat.N1()).fill(
+                0.0508,
+                1.016
+        );
+        public static final Matrix<N1, N1> SENSOR_TOLERANCE = Matrix.mat(Nat.N1(), Nat.N1()).fill(
+                0.001
+        );
+
+        public static final Vector<N2> qelms = VecBuilder.fill(
+                0.0254,
+                0.254
+        );
+        public static final Vector<N1> relms = VecBuilder.fill(
+                0.3048
+        );
+    }
+
+    public static class Falcon {
+        public static final double NOMINAL_VOLTAGE = 10; // [volt]
+        public static final double STALL_TORQUE = 4.69; // [N*m]
+        public static final double STALL_CURRENT = 257; // [amps]
+        public static final double FREE_CURRENT = 1.5; // [amps]
+        public static final double FREE_SPEED = 6380 * Math.PI * 2 / 60.0; // [rad/s]
+
+        public static final double R = NOMINAL_VOLTAGE / STALL_CURRENT; // [ohms]
+        public static final double Kv = FREE_SPEED / (NOMINAL_VOLTAGE - R * FREE_CURRENT); // [rad/s*volt]
+        public static final double Kt = STALL_TORQUE / STALL_CURRENT; // [N*m/amps]
+    }
+
+    public static final class Drivetrain {
+        public static final Map<Double, Double> rotationMap = new HashMap<>() {{
+
+        }};
     }
 }
