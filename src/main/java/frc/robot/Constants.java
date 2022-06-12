@@ -1,7 +1,7 @@
 package frc.robot;
 
 
-import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
@@ -9,9 +9,6 @@ import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N2;
 import frc.robot.valuetuner.WebConstant;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public final class Constants {
     public static final int TALON_TIMEOUT = 10; // Waiting period for configurations [ms].
@@ -75,8 +72,12 @@ public final class Constants {
     }
 
     public static final class Drivetrain {
-        public static final Map<Double, Double> rotationMap = new HashMap<>() {{
-
-        }};
+        public static final NeutralMode NEUTRAL_MODE = NeutralMode.Coast;
+        public static final double ROTATION_REDUCTION = 0.6;
+        public static final double CHASSIS_WIDTH = 0.69; // [m]
+        public static final boolean INVERT_ROTATION = false;
+        public static final double WHEEL_RADIUS = 0.15;
+        public static final double TICKS_PER_METER = 2048 / (2 * Math.PI * WHEEL_RADIUS);
+        public static final double DEFAULT_INPUT_DEADBAND = 0.05;
     }
 }

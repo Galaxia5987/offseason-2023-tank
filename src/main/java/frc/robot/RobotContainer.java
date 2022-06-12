@@ -3,6 +3,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.drivetrain.Drivetrain;
+import frc.robot.subsystems.drivetrain.commands.DefaultDrive;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.commands.JoystickControl;
 import frc.robot.subsystems.elevator.commands.PositionControl;
@@ -16,6 +18,7 @@ public class RobotContainer {
     private final JoystickButton maxHeight = new JoystickButton(xbox, XboxController.Button.kY.value);
     private final JoystickButton resetHeight = new JoystickButton(xbox, XboxController.Button.kX.value);
     private final Elevator elevator = Elevator.getInstance();
+    private final Drivetrain drive = Drivetrain.getInstance();
 
     /**
      * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -34,6 +37,7 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         elevator.setDefaultCommand(new JoystickControl(() -> -xbox.getLeftY()));
+        drive.setDefaultCommand(new DefaultDrive(xbox));
     }
 
     private void configureButtonBindings() {
