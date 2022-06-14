@@ -17,6 +17,6 @@ public class DefaultDrive extends CommandBase {
 
     @Override
     public void execute() {
-        drive.drive(-controller.getLeftY(), controller.getRightX(), Constants.Drivetrain.DEFAULT_INPUT_DEADBAND);
+        drive.drivePower(-controller.getLeftY(), controller.getRightX(), Constants.Drivetrain.DEFAULT_INPUT_DEADBAND);
     }
 }

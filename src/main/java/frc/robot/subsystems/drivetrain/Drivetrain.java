@@ -45,7 +45,7 @@ public class Drivetrain extends SubsystemBase {
      * @param rotation the rotation power. [-1,1]
      * @param deadband the interval of power in which the drivetrain doesn't move.
      */
-    public void drive(double forward, double rotation, double deadband) {
+    public void drivePower(double forward, double rotation, double deadband) {
         forward = Utils.conventionalDeadband(forward, deadband);
         rotation = Utils.conventionalDeadband(rotation, deadband);
 
@@ -56,6 +56,20 @@ public class Drivetrain extends SubsystemBase {
 
         rightMaster.set(ControlMode.PercentOutput, powerRight);
         leftMaster.set(ControlMode.PercentOutput, powerLeft);
+    }
+
+    /**
+     * Velocity based drive command.
+     *
+     * @param forward is the velocity forward of the drivetrain. [m/s]
+     * @param rotation is the rotational velocity of the drivetrain. [rad/s]
+     */
+    public void driveVelocity(double forward, double rotation) {
+        double velocityLeft = (2 * forward - rotation * Math.PI * Constants.Drivetrain.CHASSIS_WIDTH) / 2;
+        double velocityRight = 2 * forward - velocityLeft;
+
+        rightMaster.set(ControlMode.Velocity, unitModel.toTicks100ms(velocityRight));
+        leftMaster.set(ControlMode.Velocity, unitModel.toTicks100ms(velocityLeft));
     }
 
     /**
@@ -79,7 +93,7 @@ public class Drivetrain extends SubsystemBase {
     public DriveSpeeds getDriveSpeeds() {
         DifferentialDrive.WheelSpeeds speeds = getDrivebaseVelocities();
         return new DriveSpeeds((speeds.left + speeds.right) / 2,
-                (speeds.left - speeds.right) / (Math.PI * Constants.Drivetrain.CHASSIS_WIDTH));
+                (speeds.right - speeds.left) / (Math.PI * Constants.Drivetrain.CHASSIS_WIDTH));
     }
 
     public static class DriveSpeeds {
