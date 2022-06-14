@@ -22,43 +22,6 @@ public final class Constants {
     public static final boolean ENABLE_VOLTAGE_COMPENSATION = true;
     public static final boolean ENABLE_CURRENT_LIMIT = true;
 
-    public static class Elevator {
-        public static final int ACCELERATION = 2; // The acceleration for the trapezoid control mode. [m/s^2]
-        public static final int MAX_VELOCITY = 1; // The cruise velocity. [m/s]
-        public static final WebConstant STALL_CURRENT = WebConstant.of("Elevator", "Stall Current", 16);
-
-        public static final double kP = 0.2; // Proportional constant.
-        public static final double kI = 0; // Integral constant.
-        public static final double kD = 0.02; // Derivative constant.
-        public static final double MAX_HEIGHT = 1.8; // Maximum height of the elevator. [m]
-        public static final double DRUM_RADIUS = 0.03; // Radius of the elevator drum. [m]
-        public static final double SLOW_MOVEMENT = MAX_HEIGHT / 5; // Makes the elevator finish moving at 5s. [m/s]
-        public static final double TICKS_PER_METER = 2 * Math.PI * DRUM_RADIUS / 4096; // [tick]
-        public static final double g = 9.80665;
-        public static final double G = 1 / 10.0; // gear ratio
-        public static final double radius = 0; // [m]
-        public static final double mass = 0; // [kg]
-        public static final double kF = (Falcon.R * radius * mass * mass * g) / (G * Falcon.Kt); // Takes into account the force that gravity applies (feed forward).
-
-        public static final boolean INVERTED = false; // Whether the motor is inverted.
-
-        public static final Matrix<N2, N1> MODEL_TOLERANCE = Matrix.mat(Nat.N2(), Nat.N1()).fill(
-                0.0508,
-                1.016
-        );
-        public static final Matrix<N1, N1> SENSOR_TOLERANCE = Matrix.mat(Nat.N1(), Nat.N1()).fill(
-                0.001
-        );
-
-        public static final Vector<N2> qelms = VecBuilder.fill(
-                0.0254,
-                0.254
-        );
-        public static final Vector<N1> relms = VecBuilder.fill(
-                0.3048
-        );
-    }
-
     public static class Falcon {
         public static final double NOMINAL_VOLTAGE = 10; // [volt]
         public static final double STALL_TORQUE = 4.69; // [N*m]
