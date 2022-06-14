@@ -37,6 +37,14 @@ public class Drivetrain extends SubsystemBase {
         return INSTANCE;
     }
 
+    /**
+     * Main drive command.
+     * This method is used to actually move the drivetrain.
+     *
+     * @param forward the forward power. [-1,1]
+     * @param rotation the rotation power. [-1,1]
+     * @param deadband the interval of power in which the drivetrain doesn't move.
+     */
     public void drive(double forward, double rotation, double deadband) {
         forward = Utils.conventionalDeadband(forward, deadband);
         rotation = Utils.conventionalDeadband(rotation, deadband);
@@ -50,15 +58,27 @@ public class Drivetrain extends SubsystemBase {
         leftMaster.set(ControlMode.PercentOutput, powerLeft);
     }
 
+    /**
+     * Gets the speeds of the two sides of the drivetrain.
+     *
+     * @return the speeds as differential drive speeds.
+     */
     public DifferentialDrive.WheelSpeeds getDrivebaseVelocities() {
         return new DifferentialDrive.WheelSpeeds(
                 unitModel.toVelocity(rightMaster.getSelectedSensorVelocity()),
                 unitModel.toVelocity(leftMaster.getSelectedSensorVelocity()));
     }
 
+    /**
+     * Gets the speeds as forward and rotation power.
+     * See class DriveSpeeds below.
+     *
+     * @return the forward speed. [m/s]
+     *         the rotation speed. [rad/s]
+     */
     public DriveSpeeds getDriveSpeeds() {
         DifferentialDrive.WheelSpeeds speeds = getDrivebaseVelocities();
-        return new DriveSpeeds(speeds.left + speeds.right,
+        return new DriveSpeeds((speeds.left + speeds.right) / 2,
                 (speeds.left - speeds.right) / (Math.PI * Constants.Drivetrain.CHASSIS_WIDTH));
     }
 
