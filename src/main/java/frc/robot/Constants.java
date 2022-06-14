@@ -1,7 +1,6 @@
 package frc.robot;
 
 
-import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
@@ -9,9 +8,6 @@ import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N2;
 import frc.robot.valuetuner.WebConstant;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public final class Constants {
     public static final int TALON_TIMEOUT = 10; // Waiting period for configurations [ms].
@@ -72,11 +68,5 @@ public final class Constants {
         public static final double R = NOMINAL_VOLTAGE / STALL_CURRENT; // [ohms]
         public static final double Kv = FREE_SPEED / (NOMINAL_VOLTAGE - R * FREE_CURRENT); // [rad/s*volt]
         public static final double Kt = STALL_TORQUE / STALL_CURRENT; // [N*m/amps]
-    }
-
-    public static final class Drivetrain {
-        public static final Map<Double, Double> rotationMap = new HashMap<>() {{
-
-        }};
     }
 }
