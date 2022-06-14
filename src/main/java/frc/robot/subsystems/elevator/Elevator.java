@@ -104,7 +104,7 @@ public class Elevator extends SubsystemBase {
      */
     public void setPosition(double position, double timeInterval) {
         setpointHeight = unitMan.toUnits(position);
-        motor.set(ControlMode.Position, position, DemandType.ArbitraryFeedForward, kF);
+        motor.set(ControlMode.Position, position);
     }
 
     /**
