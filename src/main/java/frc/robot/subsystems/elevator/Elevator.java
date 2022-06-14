@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Ports;
 import frc.robot.subsystems.UnitModel;
 import frc.robot.utils.Utils;
+import frc.robot.valuetuner.WebConstant;
 
 import static frc.robot.Constants.Elevator.*;
 import static frc.robot.Constants.Falcon.*;
@@ -31,6 +32,11 @@ public class Elevator extends SubsystemBase {
     private TrapezoidProfile.State lastTrapezoidState;
     private double setpointHeight = 0;
 
+    private final WebConstant webKp = WebConstant.of("Elevator", "kP", kP);
+    private final WebConstant webKi = WebConstant.of("Elevator", "kP", kI);
+    private final WebConstant webKd = WebConstant.of("Elevator", "kP", kD);
+    private final WebConstant webKf = WebConstant.of("Elevator", "kP", kF);
+
     /**
      * Configure the elevator motor.
      */
@@ -44,9 +50,7 @@ public class Elevator extends SubsystemBase {
         motor.configMotionAcceleration(unitMan.toTicks100ms(ACCELERATION));
         motor.configMotionCruiseVelocity(unitMan.toTicks100ms(MAX_VELOCITY));
 
-        motor.config_kP(Ports.Elevator.PID_X, kP);
-        motor.config_kI(Ports.Elevator.PID_X, kI);
-        motor.config_kD(Ports.Elevator.PID_X, kD);
+//        configurePID();
 
         Matrix<N2, N2> a = Matrix.mat(Nat.N2(), Nat.N2()).fill(
                 0,
@@ -99,6 +103,13 @@ public class Elevator extends SubsystemBase {
                 NOMINAL_VOLTAGE,
                 LOOP_PERIOD
         );
+    }
+
+    private void configurePID() {
+        motor.config_kP(Ports.Elevator.PID_X, webKp.get());
+        motor.config_kI(Ports.Elevator.PID_X, webKi.get());
+        motor.config_kD(Ports.Elevator.PID_X, webKd.get());
+        motor.config_kF(Ports.Elevator.PID_X, webKf.get());
     }
 
     public static Elevator getInstance() {
@@ -218,5 +229,10 @@ public class Elevator extends SubsystemBase {
      */
     public void resetEncoder() {
         motor.setSelectedSensorPosition(0);
+    }
+
+    @Override
+    public void periodic() {
+//        configurePID();
     }
 }
