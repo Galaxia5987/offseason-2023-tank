@@ -13,10 +13,10 @@ import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.LinearSystemLoop;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Ports;
 import frc.robot.subsystems.UnitModel;
+import frc.robot.utils.Utils;
 
 import static frc.robot.Constants.Elevator.*;
 import static frc.robot.Constants.Falcon.*;
@@ -52,7 +52,7 @@ public class Elevator extends SubsystemBase {
                 0,
                 0,
                 1,
-                -(sqr(G) * Kt) / (R * sqr(radius) * mass * Kv)
+                -(Utils.sqr(G) * Kt) / (R * Utils.sqr(radius) * mass * Kv)
         );
 
         Matrix<N2, N1> b = Matrix.mat(Nat.N2(), Nat.N1()).fill(
@@ -106,10 +106,6 @@ public class Elevator extends SubsystemBase {
             INSTANCE = new Elevator();
         }
         return INSTANCE;
-    }
-
-    public double sqr(double d) {
-        return Math.pow(d, 2);
     }
 
     /**
