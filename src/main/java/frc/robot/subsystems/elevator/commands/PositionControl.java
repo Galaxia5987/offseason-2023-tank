@@ -41,6 +41,6 @@ public class PositionControl extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return elevator.atSetpoint(goalHeight, 0.05);
+        return elevator.atSetpoint(goalHeight, 0.05, true);
     }
 }

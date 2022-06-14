@@ -117,23 +117,51 @@ public class Elevator extends SubsystemBase {
         return unitMan.toUnits(motor.getSelectedSensorPosition());
     }
 
+    /**
+     * Gets the power of the motor.
+     *
+     * @return the power of the motor. [-1,1]
+     */
     public double getPower() {
         return motor.getMotorOutputPercent();
     }
 
+    /**
+     * Sets the power of the motor.
+     *
+     * @param power the power to set. [-1,1]
+     */
     public void setPower(double power) {
         motor.set(ControlMode.PercentOutput, power);
     }
 
+    /**
+     * Sets the height of the elevator.
+     * Converts the height to a position of the motor and calls the position based function.
+     *
+     * @param height       is the height to move the elevator to. [m]
+     * @param timeInterval is the time passed between the last call of the function. [s]
+     */
     public void setHeight(double height, double timeInterval) {
         setpointHeight = height;
         setPosition(unitMan.toTicks(height), timeInterval);
     }
 
+    /**
+     * Gets the current height of the elevator using the position of the motor.
+     *
+     * @return the height of the elevator. [m]
+     */
     public double getHeight() {
         return unitMan.toUnits(getPosition());
     }
 
+    /**
+     * Sets the motor to the desired position.
+     *
+     * @param position     is the position to set the motor to. [ticks]
+     * @param timeInterval is the time interval between this and the last call of the function. [s]
+     */
     public void setPosition(double position, double timeInterval) {
         setpointHeight = unitMan.toUnits(position);
         TrapezoidProfile.State goal = new TrapezoidProfile.State(position, 0);
@@ -148,22 +176,46 @@ public class Elevator extends SubsystemBase {
         motor.set(ControlMode.PercentOutput, output, DemandType.ArbitraryFeedForward, kF);
     }
 
-    public boolean atSetpoint(double setpoint, double tolerance) {
-        return Math.abs(setpoint - getHeight()) < tolerance;
+    /**
+     * Checks whether the elevator is at the last setpoint height.
+     *
+     * @param setpoint         is the setpoint to check. [m] or [ticks]
+     * @param tolerance        is the allowable interval of the setpoint. [m] or [ticks]
+     * @param setpointIsHeight whether the setpoint to check is height or motor position.
+     * @return whether the elevator is in the desired interval in the desired units.
+     */
+    public boolean atSetpoint(double setpoint, double tolerance, boolean setpointIsHeight) {
+        return Math.abs(setpointIsHeight ? setpoint : unitMan.toTicks(setpoint) - getHeight()) < tolerance;
     }
 
+    /**
+     * Gets the current setpoint of the elevator.
+     *
+     * @return the setpoint height. [m]
+     */
     public double getSetpointHeight() {
         return setpointHeight;
     }
 
+    /**
+     * Stops the elevator.
+     */
     public void terminate() {
         motor.set(ControlMode.PercentOutput, 0);
     }
 
+    /**
+     * Gets the motor current.
+     *
+     * @return the current output of the motor. [A]
+     */
     public double getCurrentOutput() {
         return motor.getSupplyCurrent();
     }
 
+    /**
+     * Resets the encoder of the elevator.
+     */
     public void resetEncoder() {
         motor.setSelectedSensorPosition(0);
     }
