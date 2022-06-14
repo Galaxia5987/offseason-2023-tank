@@ -15,9 +15,9 @@ public class Elevator extends SubsystemBase {
     private static Elevator INSTANCE = null;
     private final UnitModel unitMan = new UnitModel(TICKS_PER_METER);
     private final WebConstant webKp = WebConstant.of("Elevator", "kP", kP);
-    private final WebConstant webKi = WebConstant.of("Elevator", "kP", kI);
-    private final WebConstant webKd = WebConstant.of("Elevator", "kP", kD);
-    private final WebConstant webKf = WebConstant.of("Elevator", "kP", kF);
+    private final WebConstant webKi = WebConstant.of("Elevator", "kI", kI);
+    private final WebConstant webKd = WebConstant.of("Elevator", "kD", kD);
+    private final WebConstant webKf = WebConstant.of("Elevator", "kF", kF);
     private double setpointHeight = 0;
 
     /**
