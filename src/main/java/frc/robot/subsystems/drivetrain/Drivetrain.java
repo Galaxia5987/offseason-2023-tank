@@ -46,8 +46,8 @@ public class Drivetrain extends SubsystemBase {
      * @param deadband the interval of power in which the drivetrain doesn't move.
      */
     public void drivePower(double forward, double rotation, double deadband) {
-        forward = Utils.conventionalDeadband(forward, deadband);
-        rotation = Utils.conventionalDeadband(rotation, deadband);
+        forward = Utils.continuousDeadband(forward, deadband);
+        rotation = Utils.continuousDeadband(rotation, deadband);
 
         double powerRight = forward - (Constants.Drivetrain.INVERT_ROTATION ? -1 : 1) *
                 Constants.Drivetrain.ROTATION_REDUCTION * rotation;
@@ -63,8 +63,13 @@ public class Drivetrain extends SubsystemBase {
      *
      * @param forward is the velocity forward of the drivetrain. [m/s]
      * @param rotation is the rotational velocity of the drivetrain. [rad/s]
+     * @param forwardDeadband is the interval in which the velocity is 0.
+     * @param rotationDeadband is the interval in which the rotation is 0.
      */
-    public void driveVelocity(double forward, double rotation) {
+    public void driveVelocity(double forward, double rotation, double forwardDeadband, double rotationDeadband) {
+        forward = Utils.continuousDeadband(forward, forwardDeadband);
+        rotation = Utils.continuousDeadband(rotation, rotationDeadband);
+
         double velocityLeft = (2 * forward - rotation * Math.PI * Constants.Drivetrain.CHASSIS_WIDTH) / 2;
         double velocityRight = 2 * forward - velocityLeft;
 
