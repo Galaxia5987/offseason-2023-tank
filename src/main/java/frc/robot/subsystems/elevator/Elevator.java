@@ -1,7 +1,6 @@
 package frc.robot.subsystems.elevator;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Ports;
@@ -10,6 +9,18 @@ import frc.robot.valuetuner.WebConstant;
 
 import static frc.robot.Constants.Elevator.*;
 
+/*
+ * Elevator subsystem class.
+ *
+ * This class includes control with two different methods:
+ *   1. Position in ticks.
+ *   2. Height in meters.
+ *
+ * Note: There exists a variable saving the current desired setpoint for
+ * the elevator. This variable only changes once on of the set functions is called.
+ * Note: Resetting the encoder should only be done in cases where the
+ * elevator is at the lowest possible height.
+ */
 public class Elevator extends SubsystemBase {
     public static final TalonFX motor = new TalonFX(Ports.Elevator.ELE_MOTOR);
     private static Elevator INSTANCE = null;
