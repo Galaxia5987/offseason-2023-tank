@@ -9,6 +9,12 @@ import frc.robot.Ports;
 import frc.robot.subsystems.UnitModel;
 import frc.robot.utils.Utils;
 
+/*
+ * Drivetrain subsystem class.
+ *
+ * This class includes drive with both velocity and power, together with the conversions
+ * between (right, left) velocities to (forward, rotation).
+ */
 public class Drivetrain extends SubsystemBase {
     private static Drivetrain INSTANCE = null;
     private final UnitModel unitModel = new UnitModel(Constants.Drivetrain.TICKS_PER_METER);
