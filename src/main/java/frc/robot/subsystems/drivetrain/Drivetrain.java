@@ -1,7 +1,7 @@
 package frc.robot.subsystems.drivetrain;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -19,21 +19,17 @@ public class Drivetrain extends SubsystemBase {
     private static Drivetrain INSTANCE = null;
     private final UnitModel unitModel = new UnitModel(Constants.Drivetrain.TICKS_PER_METER);
 
-    private final WPI_TalonFX rightMaster = new WPI_TalonFX(Ports.Drivetrain.RIGHT_MASTER);
-    private final WPI_TalonFX leftMaster = new WPI_TalonFX(Ports.Drivetrain.LEFT_MASTER);
+    private final WPI_TalonSRX rightMaster = new WPI_TalonSRX(Ports.Drivetrain.RIGHT_MASTER);
+    private final WPI_TalonSRX leftMaster = new WPI_TalonSRX(Ports.Drivetrain.LEFT_MASTER);
 
     private Drivetrain() {
         rightMaster.setNeutralMode(Constants.Drivetrain.NEUTRAL_MODE);
         leftMaster.setNeutralMode(Constants.Drivetrain.NEUTRAL_MODE);
 
-        WPI_TalonFX rightSlave1 = new WPI_TalonFX(Ports.Drivetrain.RIGHT_SLAVE);
+        WPI_TalonSRX rightSlave1 = new WPI_TalonSRX(Ports.Drivetrain.RIGHT_SLAVE);
         rightSlave1.follow(rightMaster);
-        WPI_TalonFX rightSlave2 = new WPI_TalonFX(Ports.Drivetrain.RIGHT_SLAVE);
-        rightSlave2.follow(rightMaster);
-        WPI_TalonFX leftSlave1 = new WPI_TalonFX(Ports.Drivetrain.LEFT_SLAVE);
+        WPI_TalonSRX leftSlave1 = new WPI_TalonSRX(Ports.Drivetrain.LEFT_SLAVE);
         leftSlave1.follow(leftMaster);
-        WPI_TalonFX leftSlave2 = new WPI_TalonFX(Ports.Drivetrain.LEFT_SLAVE);
-        leftSlave2.follow(leftMaster);
     }
 
     public static Drivetrain getInstance() {
