@@ -1,6 +1,7 @@
 package frc.robot.subsystems.elevator;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Ports;
@@ -35,9 +36,9 @@ public class Elevator extends SubsystemBase {
      * Configure the elevator motor.
      */
     private Elevator() {
-        motor.setSensorPhase(Ports.Elevator.SENSOR_PHASE);
         motor.setSelectedSensorPosition(Ports.Elevator.SENSOR_POS);
         motor.setInverted(INVERTED);
+        motor.setNeutralMode(NeutralMode.Brake);
 
         motor.configMotionAcceleration(unitMan.toTicks100ms(ACCELERATION));
         motor.configMotionCruiseVelocity(unitMan.toTicks100ms(MAX_VELOCITY));

@@ -29,7 +29,7 @@ public final class Constants {
         public static final double kP = 0.2; // Proportional constant.
         public static final double kI = 0; // Integral constant.
         public static final double kD = 0.02; // Derivative constant.
-        public static final double MAX_HEIGHT = 1.8; // Maximum height of the elevator. [m]
+        public static final double MAX_HEIGHT = 1.51; // Maximum height of the elevator. [m]
         public static final double DRUM_RADIUS = 0.03; // Radius of the elevator drum. [m]
         public static final double SLOW_MOVEMENT = MAX_HEIGHT / 5; // Makes the elevator finish moving at 5s. [m/s]
         public static final double TICKS_PER_METER = 2 * Math.PI * DRUM_RADIUS / 4096; // [tick]

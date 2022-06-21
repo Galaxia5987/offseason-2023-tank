@@ -11,7 +11,7 @@ import webapp.Webserver;
 
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-    private final XboxController xbox = new XboxController(Ports.Controls.XBOX);
+    private final XboxController xbox = new XboxController(Ports.Controls.XBOX_ELEVATOR);
     private final JoystickButton midHeight = new JoystickButton(xbox, XboxController.Button.kA.value);
     private final JoystickButton maxHeight = new JoystickButton(xbox, XboxController.Button.kY.value);
     private final JoystickButton resetHeight = new JoystickButton(xbox, XboxController.Button.kX.value);
@@ -37,9 +37,9 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-        midHeight.whenPressed(new PositionControl(Constants.Elevator.MAX_HEIGHT / 2));
-        maxHeight.whenPressed(new PositionControl(Constants.Elevator.MAX_HEIGHT));
-        resetHeight.whenPressed(new ResetElevator());
+//        midHeight.whenPressed(new PositionControl(Constants.Elevator.MAX_HEIGHT / 2));
+//        maxHeight.whenPressed(new PositionControl(Constants.Elevator.MAX_HEIGHT));
+//        resetHeight.whenPressed(new ResetElevator());
     }
 
 
