@@ -69,4 +69,14 @@ public class Utils {
 
         return functions;
     }
+
+    /**
+     * Gets the square of input number.
+     *
+     * @param d the input number.
+     * @return the square of d.
+     */
+    public static double sqr(double d) {
+        return Math.pow(d, 2);
+    }
 }
