@@ -36,7 +36,7 @@ public final class Constants {
 
     public static final class Drivetrain {
         public static final NeutralMode NEUTRAL_MODE = NeutralMode.Coast;
-        public static final double ROTATION_REDUCTION = 0.6;
+        public static final double ROTATION_REDUCTION = 0.7;
         public static final double CHASSIS_WIDTH = 0.69; // [m]
         public static final boolean INVERT_ROTATION = false;
         public static final double WHEEL_RADIUS = 0.15;

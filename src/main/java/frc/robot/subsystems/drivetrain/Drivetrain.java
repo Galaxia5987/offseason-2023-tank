@@ -1,6 +1,7 @@
 package frc.robot.subsystems.drivetrain;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,10 +27,15 @@ public class Drivetrain extends SubsystemBase {
         rightMaster.setNeutralMode(Constants.Drivetrain.NEUTRAL_MODE);
         leftMaster.setNeutralMode(Constants.Drivetrain.NEUTRAL_MODE);
 
-        WPI_TalonSRX rightSlave1 = new WPI_TalonSRX(Ports.Drivetrain.RIGHT_SLAVE);
-        rightSlave1.follow(rightMaster);
-        WPI_TalonSRX leftSlave1 = new WPI_TalonSRX(Ports.Drivetrain.LEFT_SLAVE);
-        leftSlave1.follow(leftMaster);
+        WPI_TalonSRX rightSlave = new WPI_TalonSRX(Ports.Drivetrain.RIGHT_SLAVE);
+        rightSlave.follow(rightMaster);
+        WPI_TalonSRX leftSlave = new WPI_TalonSRX(Ports.Drivetrain.LEFT_SLAVE);
+        leftSlave.follow(leftMaster);
+
+        rightMaster.setInverted(false);
+        leftMaster.setInverted(true);
+        rightSlave.setInverted(false);
+        leftSlave.setInverted(true);
     }
 
     public static Drivetrain getInstance() {
