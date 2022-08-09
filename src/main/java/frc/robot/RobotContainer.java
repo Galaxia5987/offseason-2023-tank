@@ -2,20 +2,14 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.subsystems.elevator.Elevator;
-import frc.robot.subsystems.elevator.commands.JoystickControl;
-import frc.robot.subsystems.elevator.commands.PositionControl;
-import frc.robot.subsystems.elevator.commands.ResetElevator;
+import frc.robot.subsystems.drivetrain.Drivetrain;
+import frc.robot.subsystems.drivetrain.commands.DefaultDrive;
 import webapp.Webserver;
 
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
     private final XboxController xbox = new XboxController(Ports.Controls.XBOX);
-    private final JoystickButton midHeight = new JoystickButton(xbox, XboxController.Button.kA.value);
-    private final JoystickButton maxHeight = new JoystickButton(xbox, XboxController.Button.kY.value);
-    private final JoystickButton resetHeight = new JoystickButton(xbox, XboxController.Button.kX.value);
-    private final Elevator elevator = Elevator.getInstance();
+    private final Drivetrain drive = Drivetrain.getInstance();
 
     /**
      * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -33,13 +27,10 @@ public class RobotContainer {
     }
 
     private void configureDefaultCommands() {
-        elevator.setDefaultCommand(new JoystickControl(() -> -xbox.getLeftY()));
+        drive.setDefaultCommand(new DefaultDrive(xbox));
     }
 
     private void configureButtonBindings() {
-        midHeight.whenPressed(new PositionControl(Constants.Elevator.MAX_HEIGHT / 2));
-        maxHeight.whenPressed(new PositionControl(Constants.Elevator.MAX_HEIGHT));
-        resetHeight.whenPressed(new ResetElevator());
     }
 
 
