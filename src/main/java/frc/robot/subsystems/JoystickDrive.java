@@ -15,11 +15,18 @@ public class JoystickDrive extends CommandBase {
         addRequirements(tank);
     }
 
+    /**
+     * drives the tank with the joysticks' values
+     */
     @Override
     public void execute() {
         tank.drive(joystick1.getX(), joystick2.getY());
     }
 
+    /**
+     * stops the tank
+     * @param interrupted
+     */
     @Override
     public void end(boolean interrupted) {
         Tank.mainLeftMotor.stopMotor();

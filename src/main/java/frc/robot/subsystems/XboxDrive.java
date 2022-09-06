@@ -13,11 +13,18 @@ public class XboxDrive extends CommandBase {
         addRequirements(tank);
     }
 
+    /**
+     * drives the tank with the xbox controller's joysticks' values
+     */
     @Override
     public void execute() {
         tank.drive(xboxController.getLeftX(), xboxController.getRightY());
     }
 
+    /**
+     * stops the tank
+     * @param interrupted
+     */
     @Override
     public void end(boolean interrupted) {
         Tank.mainRightMotor.stopMotor();
