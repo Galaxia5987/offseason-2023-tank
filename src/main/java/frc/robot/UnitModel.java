@@ -47,4 +47,3 @@ public class UnitModel {
             return (int) (velocity * ticksPerUnit / 10);
         }
     }
-}
