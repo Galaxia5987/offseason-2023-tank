@@ -57,6 +57,10 @@ public class Tank extends SubsystemBase {
     }
 
     public double getLeftWheelVelocity(){
-        mainLeftMotor.
+        return unitModel.toUnits(mainLeftMotor.getSelectedSensorVelocity());
+    }
+
+    public double getRightWheelVelocity(){
+        return unitModel.toUnits(mainRightMotor.getSelectedSensorVelocity());
     }
 }
