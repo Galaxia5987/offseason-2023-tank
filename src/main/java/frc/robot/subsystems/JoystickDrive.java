@@ -8,10 +8,10 @@ public class JoystickDrive extends CommandBase {
     public static Joystick joystick2;
     public static Tank tank;
 
-    public JoystickDrive(Joystick joystick1, Joystick joystick2, Tank tank){
-        this.joystick1=joystick1;
-        this.joystick2=joystick2;
-        this.tank=tank;
+    public JoystickDrive(Joystick joystick1, Joystick joystick2, Tank tank) {
+        this.joystick1 = joystick1;
+        this.joystick2 = joystick2;
+        this.tank = tank;
         addRequirements(tank);
     }
 
@@ -25,6 +25,7 @@ public class JoystickDrive extends CommandBase {
 
     /**
      * stops the tank
+     *
      * @param interrupted
      */
     @Override

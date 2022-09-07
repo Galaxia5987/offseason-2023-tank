@@ -7,9 +7,9 @@ public class XboxDrive extends CommandBase {
     public static XboxController xboxController;
     public static Tank tank;
 
-    public XboxDrive(XboxController xboxController, Tank tank){
-        this.xboxController=xboxController;
-        this.tank=tank;
+    public XboxDrive(XboxController xboxController, Tank tank) {
+        this.xboxController = xboxController;
+        this.tank = tank;
         addRequirements(tank);
     }
 
@@ -23,6 +23,7 @@ public class XboxDrive extends CommandBase {
 
     /**
      * stops the tank
+     *
      * @param interrupted
      */
     @Override
