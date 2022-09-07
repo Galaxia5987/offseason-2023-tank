@@ -20,7 +20,7 @@ public class JoystickDrive extends CommandBase {
      */
     @Override
     public void execute() {
-        tank.drive(joystick1.getX(), joystick2.getY());
+        tank.drive(joystick1.getY(), joystick2.getX());
     }
 
     /**

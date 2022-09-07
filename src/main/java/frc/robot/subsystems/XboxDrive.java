@@ -18,7 +18,7 @@ public class XboxDrive extends CommandBase {
      */
     @Override
     public void execute() {
-        tank.drive(xboxController.getLeftX(), xboxController.getRightY());
+        tank.drive(xboxController.getLeftY(), xboxController.getRightX());
     }
 
     /**
