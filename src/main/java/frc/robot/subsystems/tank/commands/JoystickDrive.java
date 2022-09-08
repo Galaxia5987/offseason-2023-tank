@@ -1,7 +1,8 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.tank.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.tank.Tank;
 
 public class JoystickDrive extends CommandBase {
     public static Joystick joystick1;
