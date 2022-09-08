@@ -7,5 +7,6 @@ public class Ports {
     public static final int AUX_LEFT_MOTOR = 22;
     public static final int MAIN_RIGHT_MOTOR = 40;
     public static final int AUX_RIGHT_MOTOR = 11;
+    public static final int XBOX_CONTROLLER = 0;
 
 }
