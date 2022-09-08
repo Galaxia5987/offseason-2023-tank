@@ -36,7 +36,7 @@ public class Elevator extends SubsystemBase {
      * Configure the elevator motor.
      */
     private Elevator() {
-        motor.setSelectedSensorPosition(Ports.Elevator.SENSOR_POS);
+        motor.setSelectedSensorPosition(0);
         motor.setInverted(INVERTED);
         motor.setNeutralMode(NeutralMode.Brake);
 
@@ -54,10 +54,10 @@ public class Elevator extends SubsystemBase {
     }
 
     private void configurePID() {
-        motor.config_kP(Ports.Elevator.PID_X, webKp.get());
-        motor.config_kI(Ports.Elevator.PID_X, webKi.get());
-        motor.config_kD(Ports.Elevator.PID_X, webKd.get());
-        motor.config_kF(Ports.Elevator.PID_X, webKf.get());
+        motor.config_kP(0, webKp.get());
+        motor.config_kI(0, webKi.get());
+        motor.config_kD(0, webKd.get());
+        motor.config_kF(0, webKf.get());
     }
 
     /**
