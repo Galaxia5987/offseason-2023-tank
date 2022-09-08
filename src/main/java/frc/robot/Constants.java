@@ -11,7 +11,7 @@ public class Constants {
     public static final TalonFXInvertType CLOCKWISE = TalonFXInvertType.Clockwise;
     public static final TalonFXInvertType COUNTER_CLOCKWISE = TalonFXInvertType.CounterClockwise;
     public static final double TICKS_PER_M = 2048 / (2 * Math.PI * 0.0666); //[ticks/meters]
-    public static final double KP = 0;
+    public static final double KP = 0.1;
     public static final double KI = 0;
     public static final double KD = 0;
     public static final int TALON_TIME_OUT = 10; //[ms]
