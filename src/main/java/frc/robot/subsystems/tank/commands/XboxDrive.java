@@ -29,7 +29,7 @@ public class XboxDrive extends CommandBase {
      */
     @Override
     public void end(boolean interrupted) {
-        Tank.mainRightMotor.stopMotor();
-        Tank.mainLeftMotor.stopMotor();
+        tank.drive(0, 0);
+        tank.drive(0, 0);
     }
 }

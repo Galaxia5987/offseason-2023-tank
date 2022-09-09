@@ -8,14 +8,14 @@ import frc.robot.Ports;
 import frc.robot.UnitModel;
 
 public class Tank extends SubsystemBase {
-    public static WPI_TalonFX mainLeftMotor = new WPI_TalonFX(Ports.MAIN_LEFT_MOTOR);
-    public static WPI_TalonFX auxLeftMotor = new WPI_TalonFX(Ports.AUX_LEFT_MOTOR);
-    public static WPI_TalonFX mainRightMotor = new WPI_TalonFX(Ports.MAIN_RIGHT_MOTOR);
-    public static WPI_TalonFX auxRightMotor = new WPI_TalonFX(Ports.AUX_RIGHT_MOTOR);
-    public static Tank INSTANCE = null;
-    public static UnitModel unitModel = new UnitModel(Constants.TICKS_PER_M);
+    private final WPI_TalonFX mainLeftMotor = new WPI_TalonFX(Ports.MAIN_LEFT_MOTOR);
+    private final WPI_TalonFX auxLeftMotor = new WPI_TalonFX(Ports.AUX_LEFT_MOTOR);
+    private final WPI_TalonFX mainRightMotor = new WPI_TalonFX(Ports.MAIN_RIGHT_MOTOR);
+    private final WPI_TalonFX auxRightMotor = new WPI_TalonFX(Ports.AUX_RIGHT_MOTOR);
+    private static Tank INSTANCE = null;
+    private final UnitModel unitModel = new UnitModel(Constants.TICKS_PER_M);
 
-    public Tank() {
+    private Tank() {
         auxLeftMotor.follow(mainLeftMotor);
         auxRightMotor.follow(mainRightMotor);
         mainLeftMotor.setNeutralMode(NeutralMode.Coast);

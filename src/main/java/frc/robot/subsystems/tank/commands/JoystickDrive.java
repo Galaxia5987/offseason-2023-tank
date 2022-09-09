@@ -31,7 +31,7 @@ public class JoystickDrive extends CommandBase {
      */
     @Override
     public void end(boolean interrupted) {
-        Tank.mainLeftMotor.stopMotor();
-        Tank.mainRightMotor.stopMotor();
+        tank.drive(0, 0);
+        tank.drive(0, 0);
     }
 }
