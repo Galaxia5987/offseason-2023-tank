@@ -13,17 +13,34 @@ public class Tank extends SubsystemBase {
     public static WPI_TalonFX auxRightMotor = new WPI_TalonFX(Ports.Aux_Right_Mototr);
     public static Tank INSTANCE = null;
     public static UnitModel unitModel = new UnitModel(Constants.Ticks_Per_Meter);
-    private double Tank() {
+
+    private Tank() {
         auxLeftMotor.follow(mainLeftMotor);
         auxRightMotor.follow(mainRightMotor);
         mainLeftMotor.setNeutralMode(NeutralMode.Coast);
+    }
 
-        public double getLeftWheelVelocity(){
-            return unitModel.toUnits(mainLeftMotor.getPower());
+    public  double getLeftWheelPower() {
+        return mainLeftMotor.get();
+    }
+    public void setLeftWheelPower(double forward, double rotation) {
+        mainRightMotor.set(forward - 1 * rotation);
+    }
+
+    public  void setRightWheelPower(double forward, double rotation) {
+        mainRightMotor.set(forward - 1 * rotation);
+    }
+    public double getRightWheelPower(){
+        return mainRightMotor.get();
+
+    }
+    public double deadband(double value){
+        if (value > 0.05 || value < -0.05){
+            return value;
         }
-        public double getRightWheelVelocity() {
-            return unitModel.toUnits(mainRightMotor.getPower());
+ else return 0;
+    }
+
 }
-}
-}
+
 
