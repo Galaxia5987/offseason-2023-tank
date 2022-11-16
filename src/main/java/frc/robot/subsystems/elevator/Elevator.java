@@ -3,6 +3,9 @@ package frc.robot.subsystems.elevator;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.sensors.CANCoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Ports;
 import frc.robot.subsystems.UnitModel;
@@ -23,7 +26,8 @@ import static frc.robot.Constants.Elevator.*;
  * elevator is at the lowest possible height.
  */
 public class Elevator extends SubsystemBase {
-    public static final TalonFX motor = new TalonFX(Ports.Elevator.ELE_MOTOR);
+    public static final CANSparkMax motor = new CANSparkMax(Ports.Elevator.ELE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
+    public static final CANCoder encoder = new CANCoder(Ports.Elevator.ELE_ENCODER);
     private static Elevator INSTANCE = null;
     private final UnitModel unitMan = new UnitModel(TICKS_PER_METER);
     private final WebConstant webKp = WebConstant.of("Elevator", "kP", kP);
@@ -36,7 +40,6 @@ public class Elevator extends SubsystemBase {
      * Configure the elevator motor.
      */
     private Elevator() {
-        motor.setSelectedSensorPosition(0);
         motor.setInverted(INVERTED);
         motor.setNeutralMode(NeutralMode.Brake);
 
@@ -66,7 +69,7 @@ public class Elevator extends SubsystemBase {
      * @return the position of the motor. [m]
      */
     public double getPosition() {
-        return unitMan.toUnits(motor.getSelectedSensorPosition());
+        return unitMan.toUnits(encoder.getPosition());
     }
 
     /**
@@ -75,7 +78,7 @@ public class Elevator extends SubsystemBase {
      * @return the power of the motor. [-1,1]
      */
     public double getPower() {
-        return motor.getMotorOutputPercent();
+        return motor.get();
     }
 
     /**
