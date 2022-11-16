@@ -6,10 +6,17 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.controller.PIDController;
+import frc.robot.Constants;
 import frc.robot.Ports;
 import frc.robot.subsystems.UnitModel;
 import frc.robot.valuetuner.WebConstant;
+
+import java.lang.reflect.Type;
 
 import static frc.robot.Constants.Elevator.*;
 
@@ -35,16 +42,17 @@ public class Elevator extends SubsystemBase {
     private final WebConstant webKd = WebConstant.of("Elevator", "kD", kD);
     private final WebConstant webKf = WebConstant.of("Elevator", "kF", kF);
     private double setpointHeight = 0;
+    public static SparkMaxPIDController PIDController = new SparkMaxPIDController();
 
     /**
      * Configure the elevator motor.
      */
     private Elevator() {
         motor.setInverted(INVERTED);
-        motor.setNeutralMode(NeutralMode.Brake);
+        motor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
-        motor.configMotionAcceleration(unitMan.toTicks100ms(ACCELERATION));
-        motor.configMotionCruiseVelocity(unitMan.toTicks100ms(MAX_VELOCITY));
+        //motor.configMotionAcceleration(unitMan.toTicks100ms(ACCELERATION));
+        motor.enableVoltageCompensation(Constants.Elevator.ENABLE_VOLT_COMP);
 
         configurePID();
     }
@@ -57,10 +65,10 @@ public class Elevator extends SubsystemBase {
     }
 
     private void configurePID() {
-        motor.config_kP(0, webKp.get());
-        motor.config_kI(0, webKi.get());
-        motor.config_kD(0, webKd.get());
-        motor.config_kF(0, webKf.get());
+        PIDController.setP(webKp.get());
+        PIDController.setI(webKi.get());
+        PIDController.setD(webKd.get());
+        PIDController.setFF(webKf.get());
     }
 
     /**
@@ -78,7 +86,7 @@ public class Elevator extends SubsystemBase {
      * @return the power of the motor. [-1,1]
      */
     public double getPower() {
-        return motor.get();
+        return motor.getBusVoltage()*motor.getOutputCurrent();
     }
 
     /**
@@ -87,7 +95,7 @@ public class Elevator extends SubsystemBase {
      * @param power the power to set. [-1,1]
      */
     public void setPower(double power) {
-        motor.set(ControlMode.PercentOutput, power);
+        motor.set(power);
     }
 
     /**
@@ -119,7 +127,7 @@ public class Elevator extends SubsystemBase {
      */
     public void setPosition(double position, double timeInterval) {
         setpointHeight = unitMan.toUnits(position);
-        motor.set(ControlMode.Position, position);
+        encoder.setPosition(position);
     }
 
     /**
@@ -147,7 +155,7 @@ public class Elevator extends SubsystemBase {
      * Stops the elevator.
      */
     public void terminate() {
-        motor.set(ControlMode.PercentOutput, 0);
+        motor.set(0);
     }
 
     /**
@@ -156,14 +164,14 @@ public class Elevator extends SubsystemBase {
      * @return the current output of the motor. [A]
      */
     public double getCurrentOutput() {
-        return motor.getSupplyCurrent();
+        return motor.getOutputCurrent();
     }
 
     /**
      * Resets the encoder of the elevator.
      */
     public void resetEncoder() {
-        motor.setSelectedSensorPosition(0);
+        encoder.setPosition(0);
     }
 
     @Override
