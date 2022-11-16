@@ -12,6 +12,7 @@ public final class Ports {
 
     public static final class Elevator {
         public static final int ELE_MOTOR = 13;
+        public static final int ELE_ENCODER = 0;
     }
 
     public static class Controls {
