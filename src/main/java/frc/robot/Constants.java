@@ -39,6 +39,7 @@ public final class Constants {
         public static final double radius = 0; // [m]
         public static final double mass = 0; // [kg]
         public static final double kF = (Falcon.R * radius * mass * mass * g) / (G * Falcon.Kt); // Takes into account the force that gravity applies (feed forward).
+        public static final int ENABLE_VOLT_COMP = 12;
 
         public static final boolean INVERTED = false; // Whether the motor is inverted.
 
