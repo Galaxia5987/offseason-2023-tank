@@ -72,6 +72,10 @@ public final class Constants {
         public static final double Kt = STALL_TORQUE / STALL_CURRENT; // [N*m/amps]
     }
 
+    public static final class Gripper {
+        public static final int TICKS_PER_ROTATION = 1024;
+    }
+
     public static final class Drivetrain {
         public static final NeutralMode NEUTRAL_MODE = NeutralMode.Coast;
         public static final double ROTATION_REDUCTION = 0.7;
