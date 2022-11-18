@@ -35,7 +35,7 @@ public final class Constants {
         public static final double MAX_HEIGHT = 1.51; // Maximum height of the elevator. [m]
         public static final double DRUM_RADIUS = 0.03; // Radius of the elevator drum. [m]
         public static final double SLOW_MOVEMENT = MAX_HEIGHT / 5; // Makes the elevator finish moving at 5s. [m/s]
-        public static final double TICKS_PER_METER = 2 * Math.PI * DRUM_RADIUS / 4096; // [tick]
+        public static final double TICKS_PER_METER = 2 * Math.PI * DRUM_RADIUS / 42; // [tick]
         public static final double g = 9.80665;
         public static final double G = 1 / 10.0; // gear ratio
         public static final double radius = 0; // [m]
