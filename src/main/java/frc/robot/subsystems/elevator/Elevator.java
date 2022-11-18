@@ -1,22 +1,14 @@
 package frc.robot.subsystems.elevator;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.math.controller.PIDController;
 import frc.robot.Constants;
 import frc.robot.Ports;
 import frc.robot.subsystems.UnitModel;
 import frc.robot.valuetuner.WebConstant;
-
-import java.lang.reflect.Type;
 
 import static frc.robot.Constants.Elevator.*;
 
@@ -35,6 +27,7 @@ import static frc.robot.Constants.Elevator.*;
 public class Elevator extends SubsystemBase {
     public static final CANSparkMax motor = new CANSparkMax(Ports.Elevator.ELE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
     public static final CANCoder encoder = new CANCoder(Ports.Elevator.ELE_ENCODER);
+    public static SparkMaxPIDController PIDController;
     private static Elevator INSTANCE = null;
     private final UnitModel unitMan = new UnitModel(TICKS_PER_METER);
     private final WebConstant webKp = WebConstant.of("Elevator", "kP", kP);
@@ -42,7 +35,6 @@ public class Elevator extends SubsystemBase {
     private final WebConstant webKd = WebConstant.of("Elevator", "kD", kD);
     private final WebConstant webKf = WebConstant.of("Elevator", "kF", kF);
     private double setpointHeight = 0;
-    public static SparkMaxPIDController PIDController;
 
     /**
      * Configure the elevator motor.
@@ -86,7 +78,7 @@ public class Elevator extends SubsystemBase {
      * @return the power of the motor. [-1,1]
      */
     public double getPower() {
-        return motor.getBusVoltage()*motor.getOutputCurrent();
+        return motor.getBusVoltage() * motor.getOutputCurrent();
     }
 
     /**

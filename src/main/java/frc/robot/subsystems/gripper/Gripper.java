@@ -27,25 +27,25 @@ public class Gripper extends SubsystemBase {
     }
 
     public static Gripper getINSTANCE() {
-        if (INSTANCE==null){
+        if (INSTANCE == null) {
             INSTANCE = new Gripper();
         }
         return INSTANCE;
     }
 
-    public double getWristPower(){
+    public double getWristPower() {
         return wristMotor.getMotorOutputPercent();
     }
 
-    public void setWristPower(double power){
+    public void setWristPower(double power) {
         wristMotor.set(TalonSRXControlMode.PercentOutput, power);
     }
 
-    public double getGripperPower(){
+    public double getGripperPower() {
         return gripperMotor.getMotorOutputPercent();
     }
 
-    public void setGripperPower(double power){
+    public void setGripperPower(double power) {
         gripperMotor.set(TalonSRXControlMode.PercentOutput, power);
     }
 
