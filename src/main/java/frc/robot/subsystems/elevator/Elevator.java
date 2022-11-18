@@ -42,7 +42,7 @@ public class Elevator extends SubsystemBase {
     private final WebConstant webKd = WebConstant.of("Elevator", "kD", kD);
     private final WebConstant webKf = WebConstant.of("Elevator", "kF", kF);
     private double setpointHeight = 0;
-    public static SparkMaxPIDController PIDController = new SparkMaxPIDController();
+    public static SparkMaxPIDController PIDController;
 
     /**
      * Configure the elevator motor.
