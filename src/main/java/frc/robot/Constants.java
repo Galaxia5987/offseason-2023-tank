@@ -1,7 +1,9 @@
 package frc.robot;
 
 
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
@@ -74,6 +76,9 @@ public final class Constants {
 
     public static final class Gripper {
         public static final int TICKS_PER_ROTATION = 1024;
+        public static final boolean ENABLE_VOLT_COMP = true;
+        public static final int CONFIG_VOLT_COMP = 12;
+        public static final InvertType CLOCKWISE = InvertType.InvertMotorOutput;
     }
 
     public static final class Drivetrain {
