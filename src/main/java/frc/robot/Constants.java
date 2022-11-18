@@ -1,6 +1,7 @@
 package frc.robot;
 
 
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Nat;
@@ -33,12 +34,13 @@ public final class Constants {
         public static final double MAX_HEIGHT = 1.51; // Maximum height of the elevator. [m]
         public static final double DRUM_RADIUS = 0.03; // Radius of the elevator drum. [m]
         public static final double SLOW_MOVEMENT = MAX_HEIGHT / 5; // Makes the elevator finish moving at 5s. [m/s]
-        public static final double TICKS_PER_METER = 2 * Math.PI * DRUM_RADIUS / 4096; // [tick]
+        public static final double TICKS_PER_METER = 2 * Math.PI * DRUM_RADIUS / 42; // [tick]
         public static final double g = 9.80665;
         public static final double G = 1 / 10.0; // gear ratio
         public static final double radius = 0; // [m]
         public static final double mass = 0; // [kg]
         public static final double kF = (Falcon.R * radius * mass * mass * g) / (G * Falcon.Kt); // Takes into account the force that gravity applies (feed forward).
+        public static final int ENABLE_VOLT_COMP = 12;
 
         public static final boolean INVERTED = false; // Whether the motor is inverted.
 
@@ -69,6 +71,13 @@ public final class Constants {
         public static final double R = NOMINAL_VOLTAGE / STALL_CURRENT; // [ohms]
         public static final double Kv = FREE_SPEED / (NOMINAL_VOLTAGE - R * FREE_CURRENT); // [rad/s*volt]
         public static final double Kt = STALL_TORQUE / STALL_CURRENT; // [N*m/amps]
+    }
+
+    public static final class Gripper {
+        public static final int TICKS_PER_ROTATION = 1024;
+        public static final boolean ENABLE_VOLT_COMP = true;
+        public static final int CONFIG_VOLT_COMP = 12;
+        public static final InvertType CLOCKWISE = InvertType.InvertMotorOutput;
     }
 
     public static final class Drivetrain {

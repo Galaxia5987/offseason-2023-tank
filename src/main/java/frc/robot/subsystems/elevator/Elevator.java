@@ -1,9 +1,11 @@
 package frc.robot.subsystems.elevator;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.sensors.CANCoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Ports;
 import frc.robot.subsystems.UnitModel;
 import frc.robot.valuetuner.WebConstant;
@@ -23,7 +25,9 @@ import static frc.robot.Constants.Elevator.*;
  * elevator is at the lowest possible height.
  */
 public class Elevator extends SubsystemBase {
-    public static final TalonFX motor = new TalonFX(Ports.Elevator.ELE_MOTOR);
+    public static final CANSparkMax motor = new CANSparkMax(Ports.Elevator.ELE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
+    public static final CANCoder encoder = new CANCoder(Ports.Elevator.ELE_ENCODER);
+    public static SparkMaxPIDController PIDController;
     private static Elevator INSTANCE = null;
     private final UnitModel unitMan = new UnitModel(TICKS_PER_METER);
     private final WebConstant webKp = WebConstant.of("Elevator", "kP", kP);
@@ -36,12 +40,11 @@ public class Elevator extends SubsystemBase {
      * Configure the elevator motor.
      */
     private Elevator() {
-        motor.setSelectedSensorPosition(0);
         motor.setInverted(INVERTED);
-        motor.setNeutralMode(NeutralMode.Brake);
+        motor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
-        motor.configMotionAcceleration(unitMan.toTicks100ms(ACCELERATION));
-        motor.configMotionCruiseVelocity(unitMan.toTicks100ms(MAX_VELOCITY));
+        //motor.configMotionAcceleration(unitMan.toTicks100ms(ACCELERATION));
+        motor.enableVoltageCompensation(Constants.Elevator.ENABLE_VOLT_COMP);
 
         configurePID();
     }
@@ -54,10 +57,10 @@ public class Elevator extends SubsystemBase {
     }
 
     private void configurePID() {
-        motor.config_kP(0, webKp.get());
-        motor.config_kI(0, webKi.get());
-        motor.config_kD(0, webKd.get());
-        motor.config_kF(0, webKf.get());
+        PIDController.setP(webKp.get());
+        PIDController.setI(webKi.get());
+        PIDController.setD(webKd.get());
+        PIDController.setFF(webKf.get());
     }
 
     /**
@@ -66,7 +69,7 @@ public class Elevator extends SubsystemBase {
      * @return the position of the motor. [m]
      */
     public double getPosition() {
-        return unitMan.toUnits(motor.getSelectedSensorPosition());
+        return unitMan.toUnits(encoder.getPosition());
     }
 
     /**
@@ -75,7 +78,7 @@ public class Elevator extends SubsystemBase {
      * @return the power of the motor. [-1,1]
      */
     public double getPower() {
-        return motor.getMotorOutputPercent();
+        return motor.getBusVoltage() * motor.getOutputCurrent();
     }
 
     /**
@@ -84,7 +87,7 @@ public class Elevator extends SubsystemBase {
      * @param power the power to set. [-1,1]
      */
     public void setPower(double power) {
-        motor.set(ControlMode.PercentOutput, power);
+        motor.set(power);
     }
 
     /**
@@ -116,7 +119,7 @@ public class Elevator extends SubsystemBase {
      */
     public void setPosition(double position, double timeInterval) {
         setpointHeight = unitMan.toUnits(position);
-        motor.set(ControlMode.Position, position);
+        encoder.setPosition(position);
     }
 
     /**
@@ -144,7 +147,7 @@ public class Elevator extends SubsystemBase {
      * Stops the elevator.
      */
     public void terminate() {
-        motor.set(ControlMode.PercentOutput, 0);
+        motor.set(0);
     }
 
     /**
@@ -153,14 +156,14 @@ public class Elevator extends SubsystemBase {
      * @return the current output of the motor. [A]
      */
     public double getCurrentOutput() {
-        return motor.getSupplyCurrent();
+        return motor.getOutputCurrent();
     }
 
     /**
      * Resets the encoder of the elevator.
      */
     public void resetEncoder() {
-        motor.setSelectedSensorPosition(0);
+        encoder.setPosition(0);
     }
 
     @Override
