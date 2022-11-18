@@ -1,2 +1,4 @@
-package frc.robot.subsystems.gripper.commands;public class Wrist {
+package frc.robot.subsystems.gripper.commands;
+
+public class Wrist {
 }
