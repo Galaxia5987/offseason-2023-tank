@@ -15,6 +15,11 @@ public final class Ports {
         public static final int ELE_ENCODER = 0;
     }
 
+    public static final class Gripper {
+        public static final int GRIPPER_MOTOR = 0;
+        public static final int WRIST_MOTOR = 0;
+    }
+
     public static class Controls {
         public static final int XBOX_DRIVETRAIN = 0;
         public static final int XBOX_ELEVATOR = 1;
