@@ -8,6 +8,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N2;
+import frc.robot.subsystems.gripper.Gripper;
 import frc.robot.valuetuner.WebConstant;
 
 public final class Constants {
@@ -80,5 +81,11 @@ public final class Constants {
         public static final double WHEEL_RADIUS = 0.15;
         public static final double TICKS_PER_METER = 2048 / (2 * Math.PI * WHEEL_RADIUS);
         public static final double DEFAULT_INPUT_DEADBAND = 0.05;
+    }
+    public static final class Gripper{
+        public static final double TICKS_PER_ROTATION = 1024*23;
+        public static final double TICKS_PER_RADIAN = 1024/(Math.PI*2);
+
+
     }
 }

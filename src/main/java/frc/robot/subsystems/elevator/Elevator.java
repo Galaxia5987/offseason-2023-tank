@@ -41,11 +41,13 @@ public class Elevator extends SubsystemBase {
      */
     private Elevator() {
 //        motor.setSelectedSensorPosition(0);
+        encoder.set(0);
 //        motor.setInverted(INVERTED);
         motor.setInverted(INVERTED);
 //        motor.setNeutralMode(NeutralMode.Brake);
         motor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 //        motor.configMotionAcceleration(unitMan.toTicks100ms(ACCELERATION));
+
 //        motor.configMotionCruiseVelocity(unitMan.toTicks100ms(MAX_VELOCITY));
 
      //   configurePID();
@@ -80,7 +82,7 @@ public class Elevator extends SubsystemBase {
      * @return the power of the motor. [-1,1]
      */
     public double getPower() {
-        return motor.getAppliedOutput();
+        return motor.get();
     }
 
     /**
