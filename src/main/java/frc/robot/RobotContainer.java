@@ -7,6 +7,8 @@ import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.commands.DefaultDrive;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.commands.JoystickControl;
+import frc.robot.subsystems.gripper.Gripper;
+import frc.robot.subsystems.gripper.commands.PowerControlWeee;
 import webapp.Webserver;
 
 public class RobotContainer {
@@ -40,8 +42,8 @@ public class RobotContainer {
         elevator.setDefaultCommand(new JoystickControl(xbox_elevator));
     }
 
-    private void configureButtonBindings() {
-
+     private void configureButtonBindings() {
+a.whileHeld(new PowerControlWeee(0.7));
     }
 
 

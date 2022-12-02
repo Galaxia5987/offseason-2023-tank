@@ -83,9 +83,8 @@ public final class Constants {
         public static final double DEFAULT_INPUT_DEADBAND = 0.05;
     }
     public static final class Gripper{
-        public static final double TICKS_PER_ROTATION = 1024*23;
-        public static final double TICKS_PER_RADIAN = 1024/(Math.PI*2);
 
+        public static final double TICKS_PER_RADIAN = 1024/(Math.PI*2);
 
     }
 }
