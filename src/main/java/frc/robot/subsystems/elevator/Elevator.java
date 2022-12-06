@@ -41,14 +41,15 @@ public class Elevator extends SubsystemBase {
      */
     private Elevator() {
 //        motor.setSelectedSensorPosition(0);
-        encoder.set(0);
+        encoder.setPositionToAbsolute(0);
 //        motor.setInverted(INVERTED);
         motor.setInverted(INVERTED);
 //        motor.setNeutralMode(NeutralMode.Brake);
         motor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 //        motor.configMotionAcceleration(unitMan.toTicks100ms(ACCELERATION));
 
-//        motor.configMotionCruiseVelocity(unitMan.toTicks100ms(MAX_VELOCITY));
+
+//        motor.configMotionCruiseVelocity(unitMan.toTicks100ms(MAX_VELOCITY))
 
      //   configurePID();
     }
@@ -60,12 +61,12 @@ public class Elevator extends SubsystemBase {
         return INSTANCE;
     }
 
-//    private void configurePID() {
-//        motor.config_kP(0, webKp.get());
-//        motor.config_kI(0, webKi.get());
-//        motor.config_kD(0, webKd.get());
-//        motor.config_kF(0, webKf.get());
-//    }
+   private void configurePID() {
+       motor.config_kP(0, webKp.get());
+       motor.config_kI(0, webKi.get());
+       motor.config_kD(0, webKd.get());
+       motor.config_kF(0, webKf.get());
+   }
 
     /**
      * Gets the position of the motor (used for debugging).
@@ -91,7 +92,7 @@ public class Elevator extends SubsystemBase {
      * @param power the power to set. [-1,1]
      */
     public void setPower(double power) {
-        motor.set;
+        motor.set(power);
     }
 
     /**
@@ -150,25 +151,25 @@ public class Elevator extends SubsystemBase {
     /**
      * Stops the elevator.
      */
-    public void terminate() {
-        motor.set(ControlMode.PercentOutput, 0);
-    }
+//    //public void terminate() {
+//        motor.set(ControlMode.PercentOutput, 0);
+//    }
 
     /**
      * Gets the motor current.
      *
      * @return the current output of the motor. [A]
      */
-    public double getCurrentOutput() {
-        return motor.getSupplyCurrent();
-    }
+//    //public double getCurrentOutput() {
+//        return motor.getSupplyCurrent();
+//    }
 
     /**
      * Resets the encoder of the elevator.
      */
-    public void resetEncoder() {
-        motor.setSelectedSensorPosition(0);
-    }
+//    public void resetEncoder() {
+//        motor.setSelectedSensorPosition(0);
+//    }
 
     @Override
     public void periodic() {
