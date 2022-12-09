@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Ports;
 import frc.robot.subsystems.UnitModel;
@@ -27,6 +28,9 @@ import static frc.robot.Constants.Elevator.*;
  */
 public class Elevator extends SubsystemBase {
     public static final CANSparkMax motor = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
+
+public static SparkMaxPIDController PIDController;
+
     public static final CANCoder encoder = new CANCoder(3);
     private static Elevator INSTANCE = null;
     private final UnitModel unitMan = new UnitModel(TICKS_PER_METER_NEO);
@@ -62,12 +66,11 @@ public class Elevator extends SubsystemBase {
     }
 
    private void configurePID() {
-       motor.config_kP(0, webKp.get());
-       motor.config_kI(0, webKi.get());
-       motor.config_kD(0, webKd.get());
-       motor.config_kF(0, webKf.get());
+        PIDController.setP(1);
+        PIDController.setI(2);
+        PIDController.setD(3);
+        PIDController.setFF(4);
    }
-
     /**
      * Gets the position of the motor (used for debugging).
      *
@@ -151,9 +154,9 @@ public class Elevator extends SubsystemBase {
     /**
      * Stops the elevator.
      */
-//    //public void terminate() {
-//        motor.set(ControlMode.PercentOutput, 0);
-//    }
+    public void terminate() {
+        motor.set(0);
+    }
 
     /**
      * Gets the motor current.

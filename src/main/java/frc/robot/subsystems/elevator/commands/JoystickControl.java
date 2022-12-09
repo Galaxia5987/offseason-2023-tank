@@ -15,6 +15,10 @@ public class JoystickControl extends CommandBase {
 
     @Override
     public void execute() {
-        elevator.setPower(-xbox.getLeftY());
+        if(Math.abs(xbox.getLeftY())>0.05){
+            elevator.setPower(xbox.getLeftY());
+        }
+        else{
+        }
     }
 }

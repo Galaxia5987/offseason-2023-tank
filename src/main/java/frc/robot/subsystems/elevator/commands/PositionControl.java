@@ -36,7 +36,7 @@ public class PositionControl extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        elevator.terminate();
+        elevator.setPower(0);
     }
 
     @Override
