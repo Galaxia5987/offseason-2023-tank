@@ -12,7 +12,7 @@ import frc.robot.subsystems.gripper.commands.PowerControlWeee;
 import webapp.Webserver;
 
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+    // The robot's subsystems and commands are defined here...
     private final XboxController xbox_drivetrain = new XboxController(Ports.Controls.XBOX_DRIVETRAIN);
     private final XboxController xbox_elevator = new XboxController(Ports.Controls.XBOX_ELEVATOR);
     private final JoystickButton a = new JoystickButton(xbox_drivetrain, XboxController.Button.kA.value);
@@ -39,21 +39,21 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         drive.setDefaultCommand(new DefaultDrive(xbox_drivetrain));
-        elevator.setDefaultCommand(new JoystickControl(xbox_elevator));
-    }
+        System.out.println(xbox_elevator.getLeftY());
+     }
 
-     private void configureButtonBindings() {
-a.whileHeld(new PowerControlWeee(0.7));
+    private void configureButtonBindings() {
+        a.whileHeld(new PowerControlWeee(0.7));
     }
 
 
     /**
-    * Use this to pass the autonomous command to the main {@link Robot} class.
-    *
-    * @return the command to run in autonomous
-    */
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
     public Command getAutonomousCommand() {
-      return null;
+        return null;
     }
 
     /**

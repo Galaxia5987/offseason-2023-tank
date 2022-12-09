@@ -27,11 +27,11 @@ import static frc.robot.Constants.Elevator.*;
  * elevator is at the lowest possible height.
  */
 public class Elevator extends SubsystemBase {
-    public static final CANSparkMax motor = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
+    public static final CANSparkMax motor = new CANSparkMax(20, CANSparkMaxLowLevel.MotorType.kBrushless);
 
 public static SparkMaxPIDController PIDController;
 
-    public static final CANCoder encoder = new CANCoder(3);
+    public static final CANCoder encoder = new CANCoder(20);
     private static Elevator INSTANCE = null;
     private final UnitModel unitMan = new UnitModel(TICKS_PER_METER_NEO);
     //private final WebConstant webKp = WebConstant.of("Elevator", "kP", kP);
