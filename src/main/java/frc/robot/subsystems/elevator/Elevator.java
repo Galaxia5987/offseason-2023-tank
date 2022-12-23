@@ -27,11 +27,11 @@ import static frc.robot.Constants.Elevator.*;
  * elevator is at the lowest possible height.
  */
 public class Elevator extends SubsystemBase {
-    public static final CANSparkMax motor = new CANSparkMax(20, CANSparkMaxLowLevel.MotorType.kBrushless);
+    public static final CANSparkMax motor = new CANSparkMax(13, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-public static SparkMaxPIDController PIDController;
+    public static SparkMaxPIDController PIDController;
 
-    public static final CANCoder encoder = new CANCoder(20);
+    public static final CANCoder encoder = new CANCoder(13);
     private static Elevator INSTANCE = null;
     private final UnitModel unitMan = new UnitModel(TICKS_PER_METER_NEO);
     //private final WebConstant webKp = WebConstant.of("Elevator", "kP", kP);
@@ -44,6 +44,7 @@ public static SparkMaxPIDController PIDController;
      * Configure the elevator motor.
      */
     private Elevator() {
+        PIDController = motor.getPIDController();
 //        motor.setSelectedSensorPosition(0);
         encoder.setPositionToAbsolute(0);
 //        motor.setInverted(INVERTED);
@@ -55,7 +56,7 @@ public static SparkMaxPIDController PIDController;
 
 //        motor.configMotionCruiseVelocity(unitMan.toTicks100ms(MAX_VELOCITY))
 
-     //   configurePID();
+        //   configurePID();
     }
 
     public static Elevator getInstance() {
@@ -65,12 +66,13 @@ public static SparkMaxPIDController PIDController;
         return INSTANCE;
     }
 
-   private void configurePID() {
-        PIDController.setP(1);
-        PIDController.setI(2);
-        PIDController.setD(3);
-        PIDController.setFF(4);
-   }
+    private void configurePID() {
+        PIDController.setP(0.2);
+        PIDController.setI(0);
+        PIDController.setD(0);
+        PIDController.setFF(0);
+    }
+
     /**
      * Gets the position of the motor (used for debugging).
      *
@@ -173,7 +175,6 @@ public static SparkMaxPIDController PIDController;
 //    public void resetEncoder() {
 //        motor.setSelectedSensorPosition(0);
 //    }
-
     @Override
     public void periodic() {
         configurePID();

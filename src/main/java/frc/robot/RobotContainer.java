@@ -38,7 +38,7 @@ public class RobotContainer {
     }
 
     private void configureDefaultCommands() {
-        drive.setDefaultCommand(new DefaultDrive(xbox_drivetrain));
+        drive.setDefaultCommand(new DefaultDrive(xbox_elevator));
         System.out.println(xbox_elevator.getLeftY());
      }
 
