@@ -31,7 +31,7 @@ public class Elevator extends SubsystemBase {
 
     public static SparkMaxPIDController PIDController;
 
-    public static final CANCoder encoder = new CANCoder(13);
+    public static final CANCoder encoder = new CANCoder(0);
     private static Elevator INSTANCE = null;
     private final UnitModel unitMan = new UnitModel(TICKS_PER_METER_NEO);
     //private final WebConstant webKp = WebConstant.of("Elevator", "kP", kP);
