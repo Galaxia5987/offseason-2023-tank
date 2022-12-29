@@ -3,7 +3,9 @@ package frc.robot.subsystems.elevator;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Ports;
@@ -26,21 +28,22 @@ import static frc.robot.Constants.Elevator.*;
  */
 public class Elevator extends SubsystemBase {
     public static final CANSparkMax motor = new CANSparkMax(Ports.Elevator.ELE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
-    public static final CANCoder encoder = new CANCoder(Ports.Elevator.ELE_ENCODER);
-    public static SparkMaxPIDController PIDController;
+//    public static final CANCoder encoder = new CANCoder(Ports.Elevator.ELE_ENCODER);
+    public static SparkMaxPIDController PIDController = motor.getPIDController();
+    public static RelativeEncoder encoder = motor.getEncoder();
     private static Elevator INSTANCE = null;
     private final UnitModel unitMan = new UnitModel(TICKS_PER_METER);
-    private final WebConstant webKp = WebConstant.of("Elevator", "kP", kP);
-    private final WebConstant webKi = WebConstant.of("Elevator", "kI", kI);
-    private final WebConstant webKd = WebConstant.of("Elevator", "kD", kD);
-    private final WebConstant webKf = WebConstant.of("Elevator", "kF", kF);
+//    private final WebConstant webKp = WebConstant.of("Elevator", "kP", kP);
+//    private final WebConstant webKi = WebConstant.of("Elevator", "kI", kI);
+//    private final WebConstant webKd = WebConstant.of("Elevator", "kD", kD);
+//    private final WebConstant webKf = WebConstant.of("Elevator", "kF", kF);
     private double setpointHeight = 0;
 
     /**
      * Configure the elevator motor.
      */
     private Elevator() {
-        motor.setInverted(INVERTED);
+        motor.setInverted(true);
         motor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
         //motor.configMotionAcceleration(unitMan.toTicks100ms(ACCELERATION));
@@ -57,10 +60,10 @@ public class Elevator extends SubsystemBase {
     }
 
     private void configurePID() {
-        PIDController.setP(webKp.get());
-        PIDController.setI(webKi.get());
-        PIDController.setD(webKd.get());
-        PIDController.setFF(webKf.get());
+        PIDController.setP(0.1);
+        PIDController.setI(0);
+        PIDController.setD(0);
+        PIDController.setFF(0);
     }
 
     /**
@@ -118,8 +121,10 @@ public class Elevator extends SubsystemBase {
      * @param timeInterval is the time interval between this and the last call of the function. [s]
      */
     public void setPosition(double position, double timeInterval) {
-        setpointHeight = unitMan.toUnits(position);
-        encoder.setPosition(position);
+        double setpointHeightTicks = unitMan.toUnits(position);
+        PIDController.setReference(setpointHeightTicks, CANSparkMax.ControlType.kPosition);
+        System.out.println(PIDController.get);
+//        encoder.setPosition(position);
     }
 
     /**
@@ -131,7 +136,7 @@ public class Elevator extends SubsystemBase {
      * @return whether the elevator is in the desired interval in the desired units.
      */
     public boolean atSetpoint(double setpoint, double tolerance, boolean setpointIsHeight) {
-        return Math.abs(setpointIsHeight ? setpoint : unitMan.toTicks(setpoint) - getHeight()) < tolerance;
+        return Math.abs((setpointIsHeight ? setpoint : unitMan.toTicks(setpoint)) - getHeight()) < tolerance;
     }
 
     /**
@@ -163,7 +168,7 @@ public class Elevator extends SubsystemBase {
      * Resets the encoder of the elevator.
      */
     public void resetEncoder() {
-        encoder.setPosition(0);
+//        encoder.setPosition(0);
     }
 
     @Override
