@@ -34,7 +34,7 @@ public class Tank extends SubsystemBase {
 
 
     /**
-     * if the tank does'nt have an instance it creates one
+     * if the tank doesn't have an instance it creates one
      *
      * @return
      */
