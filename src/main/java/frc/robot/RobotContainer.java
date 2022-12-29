@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.commands.DefaultDrive;
-import frc.robot.subsystems.drivetrain.commands.JoystickDrive;
 import webapp.Webserver;
 
 public class RobotContainer {
@@ -32,7 +31,7 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         drive.setDefaultCommand(new DefaultDrive(xbox));
-        drive.setDefaultCommand(new JoystickDrive(rightJoystick, leftJoystick));
+       // drive.setDefaultCommand(new JoystickDrive(rightJoystick, leftJoystick));
     }
 
     private void configureButtonBindings() {
