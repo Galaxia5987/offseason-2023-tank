@@ -123,7 +123,6 @@ public class Elevator extends SubsystemBase {
     public void setPosition(double position, double timeInterval) {
         double setpointHeightTicks = unitMan.toUnits(position);
         PIDController.setReference(setpointHeightTicks, CANSparkMax.ControlType.kPosition);
-        System.out.println(PIDController.get);
 //        encoder.setPosition(position);
     }
 

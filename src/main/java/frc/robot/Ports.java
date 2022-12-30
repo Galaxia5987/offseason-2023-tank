@@ -16,8 +16,8 @@ public final class Ports {
     }
 
     public static final class Gripper {
-        public static final int GRIPPER_MOTOR = 0;
-        public static final int WRIST_MOTOR = 0;
+        public static final int GRIPPER_MOTOR = 2;
+        public static final int WRIST_MOTOR = 3;
     }
 
     public static class Controls {

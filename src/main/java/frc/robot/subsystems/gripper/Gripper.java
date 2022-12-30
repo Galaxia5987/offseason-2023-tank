@@ -2,7 +2,11 @@ package frc.robot.subsystems.gripper;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.revrobotics.CANSparkMax;
+import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Ports;
@@ -12,17 +16,17 @@ public class Gripper extends SubsystemBase {
     private static Gripper INSTANCE = null;
     private final UnitModel unitModel = new UnitModel(Constants.Gripper.TICKS_PER_ROTATION);
     private final TalonSRX gripperMotor = new TalonSRX(Ports.Gripper.GRIPPER_MOTOR);
-    private final TalonSRX wristMotor = new TalonSRX(Ports.Gripper.WRIST_MOTOR);
+//    private final VictorSPX wristMotor = new VictorSPX(Ports.Gripper.WRIST_MOTOR);
 
     private Gripper() {
         gripperMotor.enableVoltageCompensation(Constants.Gripper.ENABLE_VOLT_COMP);
         gripperMotor.configVoltageCompSaturation(Constants.Gripper.CONFIG_VOLT_COMP);
         gripperMotor.setInverted(Constants.Gripper.CLOCKWISE);//check this
         gripperMotor.setNeutralMode(NeutralMode.Coast);
-        wristMotor.enableVoltageCompensation(Constants.Gripper.ENABLE_VOLT_COMP);
-        wristMotor.configVoltageCompSaturation(Constants.Gripper.CONFIG_VOLT_COMP);
-        wristMotor.setInverted(Constants.Gripper.CLOCKWISE);//check this
-        wristMotor.setNeutralMode(NeutralMode.Brake);
+//        wristMotor.enableVoltageCompensation(Constants.Gripper.ENABLE_VOLT_COMP);
+//        wristMotor.configVoltageCompSaturation(Constants.Gripper.CONFIG_VOLT_COMP);
+//        wristMotor.setInverted(Constants.Gripper.CLOCKWISE);//check this
+//        wristMotor.setNeutralMode(NeutralMode.Brake);
 
     }
 
@@ -33,13 +37,13 @@ public class Gripper extends SubsystemBase {
         return INSTANCE;
     }
 
-    public double getWristPower() {
-        return wristMotor.getMotorOutputPercent();
-    }
-
-    public void setWristPower(double power) {
-        wristMotor.set(TalonSRXControlMode.PercentOutput, power);
-    }
+//    public double getWristPower() {
+//        return wristMotor.getMotorOutputPercent();
+//    }
+//
+//    public void setWristPower(double power) {
+//        wristMotor.set(VictorSPXControlMode.PercentOutput, power);
+//    }
 
     public double getGripperPower() {
         return gripperMotor.getMotorOutputPercent();

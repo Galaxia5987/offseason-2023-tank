@@ -8,6 +8,9 @@ import frc.robot.subsystems.drivetrain.commands.DefaultDrive;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.commands.JoystickControl;
 import frc.robot.subsystems.elevator.commands.PositionControl;
+import frc.robot.subsystems.gripper.Gripper;
+import frc.robot.subsystems.gripper.commands.IntakeCube;
+import frc.robot.subsystems.gripper.commands.MoveWrist;
 import webapp.Webserver;
 
 public class RobotContainer {
@@ -37,12 +40,14 @@ public class RobotContainer {
     }
 
     private void configureDefaultCommands() {
-//        drive.setDefaultCommand(new DefaultDrive(xbox_drivetrain));
-        elevator.setDefaultCommand(new JoystickControl(xbox_elevator));
+       drive.setDefaultCommand(new DefaultDrive(xbox_drivetrain));
+       elevator.setDefaultCommand(new JoystickControl(xbox_elevator));
     }
 
     private void configureButtonBindings() {
-a.whenPressed(new PositionControl(0.5));
+        a.whileActiveContinuous(new IntakeCube(Gripper.getINSTANCE(), 0.8));
+//        y.whileActiveContinuous(new MoveWrist(-0.15));
+//        b.whileActiveContinuous(new MoveWrist(0.15));
     }
 
 

@@ -15,6 +15,11 @@ public class JoystickControl extends CommandBase {
 
     @Override
     public void execute() {
-        elevator.setPower(-xbox.getLeftY());
+        elevator.setPower(xbox.getLeftY());
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        elevator.terminate();
     }
 }
