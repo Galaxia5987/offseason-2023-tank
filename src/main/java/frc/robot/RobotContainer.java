@@ -9,6 +9,7 @@ import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.commands.JoystickControl;
 import frc.robot.subsystems.gripper.Gripper;
 import frc.robot.subsystems.gripper.commands.PowerControlWeee;
+import frc.robot.subsystems.gripper.commands.joystickShlug;
 import webapp.Webserver;
 
 public class RobotContainer {
@@ -38,12 +39,13 @@ public class RobotContainer {
     }
 
     private void configureDefaultCommands() {
-        drive.setDefaultCommand(new DefaultDrive(xbox_elevator));
+        elevator.setDefaultCommand(new JoystickControl(xbox_elevator, xbox_elevator.getLeftY()));
         System.out.println(xbox_elevator.getLeftY());
      }
 
     private void configureButtonBindings() {
         a.whileHeld(new PowerControlWeee(0.7));
+        b.whileHeld(new joystickShlug(0.7));
     }
 
 

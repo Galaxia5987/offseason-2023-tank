@@ -8,6 +8,12 @@ public class joystickShlug extends CommandBase {
     public Gripper gripper;
     public XboxController xbox;
 
+    double power;
+
+    public joystickShlug(double power){
+        this.power = power;
+    }
+
     public joystickShlug(XboxController xbox) {
         this.xbox = xbox;
         addRequirements(gripper);
