@@ -8,8 +8,11 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -20,6 +23,9 @@ public class Robot extends TimedRobot {
     public static boolean debug = false;
     public static final AHRS navx = new AHRS(SPI.Port.kMXP);
     public PowerDistribution pdp = new PowerDistribution();
+    private final XboxController xbox_elevator = new XboxController(Ports.Controls.XBOX_ELEVATOR);
+    private final JoystickButton leftStick = new JoystickButton(xbox_elevator, XboxController.Button.kLeftStick.value);
+
     private RobotContainer m_robotContainer;
     private Command m_autonomousCommand;
 
@@ -87,6 +93,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
+
     }
 
     /**
@@ -104,7 +111,8 @@ public class Robot extends TimedRobot {
     }
 
     /**
-     * This function is called once when test mode is enabled.
+     * This function is called once when
+     * test mode is enabled.
      */
     @Override
     public void testInit() {

@@ -26,6 +26,8 @@ public final class Constants {
     public static class Elevator {
         public static final int ACCELERATION = 2; // The acceleration for the trapezoid control mode. [m/s^2]
         public static final int MAX_VELOCITY = 1; // The cruise velocity. [m/s]
+        public static final double GEAR_RATIO = 0;
+
         public static final WebConstant STALL_CURRENT = WebConstant.of("Elevator", "Stall Current", 16);
 
         public static final double kP = 0.2; // Proportional constant.
@@ -59,6 +61,8 @@ public final class Constants {
         public static final Vector<N1> relms = VecBuilder.fill(
                 0.3048
         );
+        public static final double ARM_ENCODER_DIST_PER_PULSE = 0.01;
+        public static final double MIN_HIGHT = 0;
     }
 
     public static class Falcon {

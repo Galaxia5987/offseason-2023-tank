@@ -7,10 +7,18 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.SparkMaxPIDController;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.simulation.ElevatorSim;
+import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Ports;
 import frc.robot.subsystems.UnitModel;
 import frc.robot.valuetuner.WebConstant;
+
+import javax.swing.*;
 
 import static frc.robot.Constants.Elevator.*;
 
@@ -23,11 +31,13 @@ import static frc.robot.Constants.Elevator.*;
  *
  * Note: There exists a variable saving the current desired setpoint for
  * the elevator. This variable only changes once on of the set functions is called.
- * Note: Resetting the encoder should only be done in cases where the
+ * Note: Resett ing the encoder should only be done in cases where the
  * elevator is at the lowest possible height.
  */
 public class Elevator extends SubsystemBase {
     public static final CANSparkMax motor = new CANSparkMax(13, CANSparkMaxLowLevel.MotorType.kBrushless);
+    DCMotor armGearbox = DCMotor.getFalcon500(2);
+
 
     public static SparkMaxPIDController PIDController;
 
@@ -35,6 +45,8 @@ public class Elevator extends SubsystemBase {
     private static Elevator INSTANCE = null;
     private final UnitModel unitMan = new UnitModel(TICKS_PER_METER_NEO);
     private final SparkMaxPIDController PIDcontroller = motor.getPIDController();
+    private final ElevatorSim elevatorSim = new ElevatorSim(armGearbox,GEAR_RATIO, mass, DRUM_RADIUS, MIN_HIGHT, MAX_HEIGHT, true, VecBuilder.fill(Constants.Elevator.ARM_ENCODER_DIST_PER_PULSE));
+    private final EncoderSim m_encoderSim;
     //private final WebConstant webKp = WebConstant.of("Elevator", "kP", kP);
     //private final WebConstant webKi = WebConstant.of("Elevator", "kI", kI);
     //private final WebConstant webKd = WebConstant.of("Elevator", "kD", kD);
@@ -58,6 +70,8 @@ public class Elevator extends SubsystemBase {
 //        motor.configMotionCruiseVelocity(unitMan.toTicks100ms(MAX_VELOCITY))
 
         //   configurePID();
+        m_encoderSim = new EncoderSim(encoder);
+        m_encoderSim = new EncoderSim(encoder);
     }
 
     public static Elevator getInstance() {
@@ -179,5 +193,10 @@ public class Elevator extends SubsystemBase {
     @Override
     public void periodic() {
         configurePID();
+    }
+
+    @Override
+    public void simulationPeriodic() {
+
     }
 }
