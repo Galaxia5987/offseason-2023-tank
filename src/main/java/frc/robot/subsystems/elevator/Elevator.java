@@ -1,8 +1,5 @@
 package frc.robot.subsystems.elevator;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
@@ -10,15 +7,20 @@ import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
+import edu.wpi.first.wpilibj.simulation.RoboRioSim;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.Ports;
 import frc.robot.subsystems.UnitModel;
-import frc.robot.valuetuner.WebConstant;
-
-import javax.swing.*;
 
 import static frc.robot.Constants.Elevator.*;
 
@@ -37,16 +39,22 @@ import static frc.robot.Constants.Elevator.*;
 public class Elevator extends SubsystemBase {
     public static final CANSparkMax motor = new CANSparkMax(13, CANSparkMaxLowLevel.MotorType.kBrushless);
     DCMotor armGearbox = DCMotor.getFalcon500(2);
-
+Mechanism2d Mech2d = new Mechanism2d(3,3);
+MechanismRoot2d elevatorRoot2d = Mech2d.getRoot("elevator", 2,0);
+MechanismLigament2d elevatorMech2d = elevatorRoot2d.append(
+        new MechanismLigament2d("elevator", elevatorSim.getPositionMeters(),90)
+);
 
     public static SparkMaxPIDController PIDController;
 
     public static final CANCoder encoder = new CANCoder(0);
     private static Elevator INSTANCE = null;
+
+    private static JoystickButton leftStick = new JoystickButton(new XboxController(Ports.Controls.XBOX_ELEVATOR), XboxController.Button.kLeftStick.value);
     private final UnitModel unitMan = new UnitModel(TICKS_PER_METER_NEO);
     private final SparkMaxPIDController PIDcontroller = motor.getPIDController();
-    private final ElevatorSim elevatorSim = new ElevatorSim(armGearbox,GEAR_RATIO, mass, DRUM_RADIUS, MIN_HIGHT, MAX_HEIGHT, true, VecBuilder.fill(Constants.Elevator.ARM_ENCODER_DIST_PER_PULSE));
-    private final EncoderSim m_encoderSim;
+    private final ElevatorSim elevatorSim = new ElevatorSim(armGearbox, GEAR_RATIO, mass, DRUM_RADIUS, MIN_HIGHT, MAX_HEIGHT, true, VecBuilder.fill(Constants.Elevator.ARM_ENCODER_DIST_PER_PULSE));
+    private final EncoderSim encoderSim = new EncoderSim(encoder);
     //private final WebConstant webKp = WebConstant.of("Elevator", "kP", kP);
     //private final WebConstant webKi = WebConstant.of("Elevator", "kI", kI);
     //private final WebConstant webKd = WebConstant.of("Elevator", "kD", kD);
@@ -70,8 +78,6 @@ public class Elevator extends SubsystemBase {
 //        motor.configMotionCruiseVelocity(unitMan.toTicks100ms(MAX_VELOCITY))
 
         //   configurePID();
-        m_encoderSim = new EncoderSim(encoder);
-        m_encoderSim = new EncoderSim(encoder);
     }
 
     public static Elevator getInstance() {
@@ -195,8 +201,34 @@ public class Elevator extends SubsystemBase {
         configurePID();
     }
 
+    public void teleopPeriodic() {
+        if (leftStick.get()) {
+            // Here, we run PID control like normal, with a constant setpoint of 30in.
+            double pidOutput = PIDController. (m_encoder.getDistance(), Units.inchesToMeters(30));
+            motor.setVoltage(pidOutput);
+        } else {
+            // Otherwise, we disable the motor.
+            motor.set(0.0);
+        }
+    }
+
     @Override
     public void simulationPeriodic() {
+
+        elevatorSim.setInput(motor.get() * RobotController.getBatteryVoltage());
+
+        elevatorSim.update(0.020);
+
+        RoboRioSim.setVInVoltage(
+                BatterySim.calculateDefaultBatteryLoadedVoltage(elevatorSim.getCurrentDrawAmps()));
+        encoder.setDistance(m_elevatorSim.getPositionMeters());
+
+
+
+        elevatorMech2d.setLength(elevatorSim.getPositionMeters());
+        RoboRioSim.setVInVoltage(
+                BatterySim.calculateDefaultBatteryLoadedVoltage(elevatorSim.getCurrentDrawAmps()));
+
 
     }
 }
