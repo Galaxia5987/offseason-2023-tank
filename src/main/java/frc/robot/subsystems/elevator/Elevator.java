@@ -30,7 +30,7 @@ import static frc.robot.Constants.Elevator.*;
 public class Elevator extends SubsystemBase {
     public static final CANSparkMax motor = new CANSparkMax(13, CANSparkMaxLowLevel.MotorType.kBrushless);
     DCMotor armGearbox = DCMotor.getNEO(2);
-    private final ElevatorSim elevatorSim = new ElevatorSim(armGearbox, GEAR_RATIO, mass, DRUM_RADIUS, 0, MAX_HEIGHT);
+    private final ElevatorSim elevatorSim = new ElevatorSim(armGearbox, G, mass, DRUM_RADIUS, 0, MAX_HEIGHT, true);
 
     Mechanism2d Mech2d = new Mechanism2d(3, 3);
     MechanismRoot2d elevatorRoot2d = Mech2d.getRoot("elevator", 2, 0);
@@ -79,7 +79,7 @@ public class Elevator extends SubsystemBase {
     @Override
     public void periodic() {
         configurePID();
-        if (leftStick.get()) {
+        if (leftStick.getAsBoolean()) {
             double pidOutput = PIDController.calculate(encoder.getDistance(), Units.inchesToMeters(30));
             motor.setVoltage(pidOutput);
         } else {

@@ -41,7 +41,7 @@ public final class Constants {
         public static final double g = 9.80665;
         public static final double G = 1 / 10.0; // gear ratio
         public static final double radius = 0; // [m]
-        public static final double mass = 0; // [kg]
+        public static final double mass = 5; // [kg]
         public static final double kF = (Falcon.R * radius * mass * mass * g) / (G * Falcon.Kt); // Takes into account the force that gravity applies (feed forward).
 
         public static final boolean INVERTED = false; // Whether the motor is inverted.

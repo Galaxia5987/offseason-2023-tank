@@ -14,11 +14,11 @@ import webapp.Webserver;
 
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
-    private final XboxController xbox_drivetrain = new XboxController(Ports.Controls.XBOX_DRIVETRAIN);
+//    private final XboxController xbox_drivetrain = new XboxController(Ports.Controls.XBOX_DRIVETRAIN);
     private final XboxController xbox_elevator = new XboxController(Ports.Controls.XBOX_ELEVATOR);
-    private final JoystickButton a = new JoystickButton(xbox_drivetrain, XboxController.Button.kA.value);
-    private final JoystickButton b = new JoystickButton(xbox_drivetrain, XboxController.Button.kB.value);
-    private final JoystickButton y = new JoystickButton(xbox_drivetrain, XboxController.Button.kY.value);
+    private final JoystickButton a = new JoystickButton(xbox_elevator, XboxController.Button.kA.value);
+    private final JoystickButton b = new JoystickButton(xbox_elevator, XboxController.Button.kB.value);
+    private final JoystickButton y = new JoystickButton(xbox_elevator, XboxController.Button.kY.value);
 
     private final Elevator elevator = Elevator.getInstance();
     private final Drivetrain drive = Drivetrain.getInstance();
