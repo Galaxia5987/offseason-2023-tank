@@ -29,10 +29,12 @@ public class Elevator extends SubsystemBase {
     public static final CANSparkMax motor = new CANSparkMax(13, CANSparkMaxLowLevel.MotorType.kBrushless);
     DCMotor armGearbox = DCMotor.getNEO(2);
     private final ElevatorSim elevatorSim = new ElevatorSim(armGearbox, GEAR_RATIO, mass, DRUM_RADIUS, 0, MAX_HEIGHT);
-MechanismRoot2d elevatorRoot2d = Mech2d.getRoot("elevator", 2,0);
-MechanismLigament2d elevatorMech2d = elevatorRoot2d.append(
-        new MechanismLigament2d("elevator", elevatorSim.getPositionMeters(),90)
-);
+
+    Mechanism2d Mech2d = new Mechanism2d(3, 3);
+    MechanismRoot2d elevatorRoot2d = Mech2d.getRoot("elevator", 2, 0);
+    MechanismLigament2d elevatorMech2d = elevatorRoot2d.append(
+            new MechanismLigament2d("elevator", elevatorSim.getPositionMeters(), 90)
+    );
 
     public static SparkMaxPIDController PIDController;
 
