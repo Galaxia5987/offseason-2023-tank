@@ -36,9 +36,9 @@ public class Elevator extends SubsystemBase {
             new MechanismLigament2d("elevator", elevatorSim.getPositionMeters(), 90)
     );
 
-    public static SparkMaxPIDController PIDController;
+    private final PIDController PIDController = new PIDController(kP, 0, 0);
 
-    public static final CANCoder encoder = new CANCoder(0);
+    public static final Encoder encoder = new Encoder(0, 1);
     private static Elevator INSTANCE = null;
 
     private static JoystickButton leftStick = new JoystickButton(new XboxController(Ports.Controls.XBOX_ELEVATOR), XboxController.Button.kLeftStick.value);
