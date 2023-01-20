@@ -27,7 +27,7 @@ import static frc.robot.Constants.Elevator.*;
 
 public class Elevator extends SubsystemBase {
     public static final CANSparkMax motor = new CANSparkMax(13, CANSparkMaxLowLevel.MotorType.kBrushless);
-    DCMotor armGearbox = DCMotor.getFalcon500(2);
+    DCMotor armGearbox = DCMotor.getNEO(2);
 Mechanism2d Mech2d = new Mechanism2d(3,3);
 MechanismRoot2d elevatorRoot2d = Mech2d.getRoot("elevator", 2,0);
 MechanismLigament2d elevatorMech2d = elevatorRoot2d.append(
