@@ -44,7 +44,6 @@ public class Elevator extends SubsystemBase {
     private static JoystickButton leftStick = new JoystickButton(new XboxController(Ports.Controls.XBOX_ELEVATOR), XboxController.Button.kLeftStick.value);
     private final UnitModel unitMan = new UnitModel(TICKS_PER_METER_NEO);
 
-    private final ElevatorSim elevatorSim = new ElevatorSim(armGearbox, GEAR_RATIO, mass, DRUM_RADIUS, MIN_HIGHT, MAX_HEIGHT, true, VecBuilder.fill(Constants.Elevator.ARM_ENCODER_DIST_PER_PULSE));
     private final EncoderSim encoderSim = new EncoderSim(encoder);
     //private final WebConstant webKp = WebConstant.of("Elevator", "kP", kP);
     //private final WebConstant webKi = WebConstant.of("Elevator", "kI", kI);
