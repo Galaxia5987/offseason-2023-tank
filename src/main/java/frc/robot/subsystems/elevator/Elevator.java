@@ -53,7 +53,7 @@ public class Elevator extends SubsystemBase {
     private Elevator() {
         motor.setInverted(INVERTED);
         motor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-//        motor.configMotionAcceleration(unitMan.toTicks100ms(ACCELERATION));
+        configurePID();
 
     }
 
