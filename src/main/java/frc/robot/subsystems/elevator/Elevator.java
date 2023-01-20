@@ -51,19 +51,10 @@ public class Elevator extends SubsystemBase {
      * Configure the elevator motor.
      */
     private Elevator() {
-        PIDController = motor.getPIDController();
-//        motor.setSelectedSensorPosition(0);
-        encoder.setPositionToAbsolute(0);
-//        motor.setInverted(INVERTED);
         motor.setInverted(INVERTED);
-//        motor.setNeutralMode(NeutralMode.Brake);
         motor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 //        motor.configMotionAcceleration(unitMan.toTicks100ms(ACCELERATION));
 
-
-//        motor.configMotionCruiseVelocity(unitMan.toTicks100ms(MAX_VELOCITY))
-
-        //   configurePID();
     }
 
     public static Elevator getInstance() {
