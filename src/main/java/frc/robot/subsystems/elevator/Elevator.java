@@ -24,18 +24,7 @@ import frc.robot.subsystems.UnitModel;
 
 import static frc.robot.Constants.Elevator.*;
 
-/*
- * Elevator subsystem class.
- *
- * This class includes control with two different methods:
- *   1. Position in ticks.
- *   2. Height in meters.
- *
- * Note: There exists a variable saving the current desired setpoint for
- * the elevator. This variable only changes once on of the set functions is called.
- * Note: Resett ing the encoder should only be done in cases where the
- * elevator is at the lowest possible height.
- */
+
 public class Elevator extends SubsystemBase {
     public static final CANSparkMax motor = new CANSparkMax(13, CANSparkMaxLowLevel.MotorType.kBrushless);
     DCMotor armGearbox = DCMotor.getFalcon500(2);
