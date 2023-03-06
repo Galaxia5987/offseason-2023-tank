@@ -6,11 +6,10 @@ import frc.robot.subsystems.tank.Tank;
 
 public class XboxDrive extends CommandBase {
     public static XboxController xboxController;
-    public static Tank tank;
+    public static Tank tank = Tank.getINSTANCE();
 
     public XboxDrive(XboxController xboxController, Tank tank) {
         this.xboxController = xboxController;
-        this.tank = tank;
         addRequirements(tank);
     }
 

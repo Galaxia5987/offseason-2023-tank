@@ -16,8 +16,6 @@ public class Tank extends SubsystemBase {
     private final UnitModel unitModel = new UnitModel(Constants.TICKS_PER_M);
 
     private Tank() {
-        auxLeftMotor.follow(mainLeftMotor);
-        auxRightMotor.follow(mainRightMotor);
         mainLeftMotor.setNeutralMode(NeutralMode.Coast);
         mainRightMotor.setNeutralMode(NeutralMode.Coast);
         mainLeftMotor.enableVoltageCompensation(Constants.ENABLE_VOLT_COMP);
@@ -30,6 +28,8 @@ public class Tank extends SubsystemBase {
         mainRightMotor.config_kP(0, Constants.KP, Constants.TALON_TIME_OUT);
         mainRightMotor.config_kP(0, Constants.KI, Constants.TALON_TIME_OUT);
         mainRightMotor.config_kP(0, Constants.KD, Constants.TALON_TIME_OUT);
+        auxLeftMotor.follow(mainLeftMotor);
+        auxRightMotor.follow(mainRightMotor);
     }
 
 
