@@ -1,5 +1,6 @@
 package frc.robot.subsystems.tank.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.tank.Tank;
@@ -18,7 +19,9 @@ public class XboxDrive extends CommandBase {
      */
     @Override
     public void execute() {
-        tank.drive(xboxController.getLeftY(), xboxController.getRightX());
+        double speed = MathUtil.applyDeadband(xboxController.getLeftY(), 0.05);
+        double rotation = MathUtil.applyDeadband(xboxController.getRightX(), 0.05);
+        tank.drive(speed, rotation);
     }
 
     /**
