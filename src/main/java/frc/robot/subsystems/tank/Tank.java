@@ -46,20 +46,6 @@ public class Tank extends SubsystemBase {
     }
 
     /**
-     * ignores the joystick if it's in the dead bend
-     *
-     * @param value the joystick value
-     * @return the joystick value if it's not in the dead bend
-     */
-    public double deadBend(double value) {
-        if (value >= Constants.DEAD_BEND || value <= -Constants.DEAD_BEND) {
-            return value;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
      * lets the tank drive and rotate
      *
      * @param forwardsPower
@@ -69,23 +55,5 @@ public class Tank extends SubsystemBase {
         mainRightMotor.set(forwardsPower - 1 * rotationPower);
         mainLeftMotor.set(forwardsPower + 1 * rotationPower);
 
-    }
-
-    /**
-     * gets the velocity of the left wheels
-     *
-     * @return the velocity of the left wheels
-     */
-    public double getLeftWheelVelocity() {
-        return unitModel.toUnits(mainLeftMotor.getSelectedSensorVelocity());
-    }
-
-    /**
-     * gets the velocity of the right wheels
-     *
-     * @return the velocity of the right wheels
-     */
-    public double getRightWheelVelocity() {
-        return unitModel.toUnits(mainRightMotor.getSelectedSensorVelocity());
     }
 }
