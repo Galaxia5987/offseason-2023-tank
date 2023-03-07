@@ -36,22 +36,20 @@ public class Tank extends SubsystemBase {
     /**
      * if the tank doesn't have an instance it creates one
      *
-     * @return
+     * @return the tank instance
      */
     public static Tank getINSTANCE() {
         if (INSTANCE == null) {
             INSTANCE = new Tank();
-            return INSTANCE;
-        } else {
-            return INSTANCE;
         }
+        return INSTANCE;
     }
 
     /**
      * ignores the joystick if it's in the dead bend
      *
-     * @param value
-     * @return
+     * @param value the joystick value
+     * @return the joystick value if it's not in the dead bend
      */
     public double deadBend(double value) {
         if (value >= Constants.DEAD_BEND || value <= -Constants.DEAD_BEND) {
@@ -76,7 +74,7 @@ public class Tank extends SubsystemBase {
     /**
      * gets the velocity of the left wheels
      *
-     * @return
+     * @return the velocity of the left wheels
      */
     public double getLeftWheelVelocity() {
         return unitModel.toUnits(mainLeftMotor.getSelectedSensorVelocity());
@@ -85,7 +83,7 @@ public class Tank extends SubsystemBase {
     /**
      * gets the velocity of the right wheels
      *
-     * @return
+     * @return the velocity of the right wheels
      */
     public double getRightWheelVelocity() {
         return unitModel.toUnits(mainRightMotor.getSelectedSensorVelocity());
