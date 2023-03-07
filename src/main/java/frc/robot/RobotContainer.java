@@ -27,7 +27,7 @@ public class RobotContainer {
     }
 
     private void configureDefaultCommands() {
-        tank.setDefaultCommand(new XboxDrive(xboxController, tank));
+        tank.setDefaultCommand(new XboxDrive(xboxController));
     }
 
     private void configureButtonBindings() {

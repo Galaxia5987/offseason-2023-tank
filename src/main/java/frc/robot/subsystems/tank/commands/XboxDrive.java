@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.tank.Tank;
 
 public class XboxDrive extends CommandBase {
-    public static XboxController xboxController;
-    public static Tank tank = Tank.getINSTANCE();
+    private final XboxController xboxController;
+    private final Tank tank = Tank.getINSTANCE();
 
-    public XboxDrive(XboxController xboxController, Tank tank) {
+    public XboxDrive(XboxController xboxController) {
         this.xboxController = xboxController;
         addRequirements(tank);
     }
@@ -19,8 +19,8 @@ public class XboxDrive extends CommandBase {
      */
     @Override
     public void execute() {
-        double speed = MathUtil.applyDeadband(xboxController.getLeftY(), 0.05);
-        double rotation = MathUtil.applyDeadband(xboxController.getRightX(), 0.05);
+        double speed = MathUtil.applyDeadband(-xboxController.getLeftY(), 0.2);
+        double rotation = MathUtil.applyDeadband(xboxController.getRightX(), 0.2);
         tank.drive(speed, rotation);
     }
 

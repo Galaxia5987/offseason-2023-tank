@@ -29,7 +29,9 @@ public class Tank extends SubsystemBase {
         mainRightMotor.config_kP(0, Constants.KI, Constants.TALON_TIME_OUT);
         mainRightMotor.config_kP(0, Constants.KD, Constants.TALON_TIME_OUT);
         auxLeftMotor.follow(mainLeftMotor);
+        auxLeftMotor.setInverted(Constants.CLOCKWISE);
         auxRightMotor.follow(mainRightMotor);
+        auxRightMotor.setInverted(Constants.COUNTER_CLOCKWISE);
     }
 
 
@@ -54,6 +56,5 @@ public class Tank extends SubsystemBase {
     public void drive(double forwardsPower, double rotationPower) {
         mainRightMotor.set(forwardsPower - 1 * rotationPower);
         mainLeftMotor.set(forwardsPower + 1 * rotationPower);
-
     }
 }
